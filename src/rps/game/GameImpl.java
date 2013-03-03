@@ -8,6 +8,12 @@ import rps.game.data.FigureKind;
 import rps.game.data.Move;
 import rps.game.data.Player;
 
+/*
+
+	Dies ist ein ziemlich sinnloser git-test
+
+*/
+
 /**
  * The {@code GameImpl} is an implementation for the {@code Game} interface. It
  * contains the necessary logic to play a game.
