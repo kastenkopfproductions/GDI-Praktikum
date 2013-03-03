@@ -7,6 +7,12 @@ import rps.game.data.FigureKind;
 import rps.game.data.Move;
 import rps.game.data.Player;
 
+/*
+
+	Misttasten
+
+*/
+
 /**
  * This decorator is used to remove all information from get* methods that are
  * not visible for the corresponding player. Most importantly this is the
