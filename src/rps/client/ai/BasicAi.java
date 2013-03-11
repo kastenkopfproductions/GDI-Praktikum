@@ -18,8 +18,7 @@ public class BasicAi implements GameListener {
 
 	private Player player = new Player("Basic AI");
 	private Game game;
-
-	@Override
+	
 	public Player getPlayer() {
 		return player;
 	}
@@ -78,7 +77,7 @@ public class BasicAi implements GameListener {
 	@Override
 	public void provideNextMove() throws RemoteException {
 		// get all possible moves
-		Figure[] figures = this.game.getField();
+		Figure[] figures = this.game.getField(this.player);
 		ArrayList<Move> moves = new ArrayList<Move>();
 		
 		for (int i = 0; i < 7; i++) {

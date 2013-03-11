@@ -22,6 +22,9 @@ public class UIController {
 	
 	FigureKind[] figures;
 	
+	private GameSquare lockField;
+	private boolean locked = false;
+	
 	private StartupPane startupPane;
 	private WaitingPane waitingPane;
 	private GamePane gamePane;
@@ -100,6 +103,17 @@ public class UIController {
 	
 	//Handles input during a game
 	public void handleGameInput(GameSquare actSquare) {
-		//DO NOTHING!!!!!!
+		if(!locked) {
+			if(!(actSquare.getType() <= 0 || actSquare.getType() >= 4)) {
+				lockField = actSquare;
+				locked = true;
+			}
+		} else {
+			if(actSquare != lockField && actSquare.getType() == 0) {
+				actSquare.setType(lockField.getType());
+				lockField.setType(0);
+			}
+			locked = false;
+		}
 	}
 }
