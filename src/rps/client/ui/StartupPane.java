@@ -29,7 +29,7 @@ public class StartupPane {
 
 	private final JPanel connectionPane = new JPanel();
 
-	private final JLabel playerLabel = new JLabel("Player name:");
+	private final JLabel playerLabel = new JLabel("Spielername:");
 	private final JTextField playerName = new JTextField("Player X");
 
 	private final JLabel hostLabel = new JLabel("Host:");
@@ -59,7 +59,7 @@ public class StartupPane {
 		comboAI.setModel(new DefaultComboBoxModel<GameListener>(ais));
 		hostIP.setModel(new DefaultComboBoxModel<String>(getIPV4Addresses()));
 		
-		connectionPane.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 0));
+		connectionPane.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 10));
 		
 		ButtonGroup group = new ButtonGroup();
 		radioHost = new JRadioButton();
@@ -98,7 +98,7 @@ public class StartupPane {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!isValidPlayerName()) {
-					showMessage("bad player name");
+					showMessage("Ungültiger Spielername!");
 					return;
 				}
 				try {
@@ -118,7 +118,7 @@ public class StartupPane {
 					uiController.switchBackToStartup();
 					showMessage(ex.getMessage());
 				} catch (Exception ex) {
-					showMessage("game could not be started");
+					showMessage("Spiel konnte nicht gestartet werden!");
 					uiController.stopWaitingAndSwitchBackToStartup();
 				}
 			}

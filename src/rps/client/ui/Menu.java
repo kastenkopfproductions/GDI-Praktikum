@@ -17,17 +17,18 @@ public class Menu {
 	private final UIController controller;
 
 	private final JMenuBar menuBar = new JMenuBar();
-	private final JMenu menuGame = new JMenu("Game");
-	private final JMenuItem menuGameNew = new JMenuItem("New");
-	private final JMenuItem menuGameSurrender = new JMenuItem("Surrender");
-	private final JMenuItem menuGameExit = new JMenuItem("Exit");
+	private final JMenu menuGame = new JMenu("Spiel");
+	private final JMenuItem menuGameNew = new JMenuItem("Neues Spiel");
+	private final JMenuItem menuGameSurrender = new JMenuItem("Aufgeben");
+	private final JMenuItem menuGameExit = new JMenuItem("Beenden");
 	private final JMenu menuHelp = new JMenu("Hilfe");
 	private final JMenuItem menuHelpRules = new JMenuItem("Spielregeln");
-	private final JMenuItem menuHelpAbout = new JMenuItem("About");
+	private final JMenuItem menuHelpAbout = new JMenuItem("Über Stein, Papier, Schere");
 
 	public Menu(JFrame frame, UIController controller) {
 
 		this.frame = frame;
+		this.frame.setTitle("Stein, Papier, Schere");
 		this.controller = controller;
 
 		buildMenuStructure();
@@ -77,6 +78,12 @@ public class Menu {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new RulesDialog(null);
+			}
+		});
+		menuHelpAbout.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg1) {
+				new AboutDialog(null);
 			}
 		});
 	}
