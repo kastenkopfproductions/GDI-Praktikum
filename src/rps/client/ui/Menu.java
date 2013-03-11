@@ -21,6 +21,9 @@ public class Menu {
 	private final JMenuItem menuGameNew = new JMenuItem("New");
 	private final JMenuItem menuGameSurrender = new JMenuItem("Surrender");
 	private final JMenuItem menuGameExit = new JMenuItem("Exit");
+	private final JMenu menuHelp = new JMenu("Hilfe");
+	private final JMenuItem menuHelpRules = new JMenuItem("Spielregeln");
+	private final JMenuItem menuHelpAbout = new JMenuItem("About");
 
 	public Menu(JFrame frame, UIController controller) {
 
@@ -39,6 +42,10 @@ public class Menu {
 		menuGame.add(menuGameSurrender);
 		menuGame.addSeparator();
 		menuGame.add(menuGameExit);
+		menuBar.add(menuHelp);
+		menuHelp.add(menuHelpRules);
+		menuHelp.addSeparator();
+		menuHelp.add(menuHelpAbout);
 		frame.setJMenuBar(menuBar);
 
 		menuGameSurrender.setEnabled(false);
@@ -64,6 +71,12 @@ public class Menu {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.handleExit();
+			}
+		});
+		menuHelpRules.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new RulesDialog(null);
 			}
 		});
 	}
