@@ -1,7 +1,5 @@
 package rps.client;
 
-import static javax.swing.JOptionPane.showMessageDialog;
-
 import javax.swing.JOptionPane;
 
 import rps.client.ui.AssignmentDialog;

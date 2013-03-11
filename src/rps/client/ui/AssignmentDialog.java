@@ -141,7 +141,18 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 		
 		for(int i = 0; i < 2; i++) {
 			for(int j = 0; j < 7; j++) {
+				if(fields[i][j].getType() == 4)
+					numTrap--; 
+				else if(fields[i][j].getType() == 5)
+					numFlag--;
+			}
+		}
+		
+		for(int i = 0; i < 2; i++) {
+			for(int j = 0; j < 7; j++) {
 				boolean valid = false;
+				if(fields[i][j].getType() == 4 || fields[i][j].getType() == 5)
+					valid = true;
 				while(!valid) {
 					int type = (int)(Math.random() * 5 + 1);
 					switch(type) {
