@@ -44,15 +44,25 @@ public class Application {
 				uiController.handleExit();
 			}
 		});
-
+		
 		rootPane = frame.getContentPane();
 		rootPane.setLayout(new BoxLayout(rootPane, Y_AXIS));
 
 		startupPane = new StartupPane(rootPane, uiController, gameController, ais);
 		waitingPane = new WaitingPane(rootPane, uiController);
-		gamePane = new GamePane(rootPane);
-
+		gamePane = new GamePane(rootPane, uiController);
+		
+		//Initially set gamePane as active pane, so the window-size is computed correctly
+		startupPane.hide();
+		gamePane.show();
+		
 		frame.pack();
+		frame.setResizable(false);
+		
+		//After computing the window-size, set startupPane as active pane
+		gamePane.hide();
+		startupPane.show();
+		
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 

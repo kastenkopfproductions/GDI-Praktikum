@@ -1,10 +1,9 @@
 package rps.client.ui;
 
-import static javax.swing.BoxLayout.X_AXIS;
-import static javax.swing.BoxLayout.Y_AXIS;
 import static rps.client.Application.showMessage;
 import static rps.network.NetworkUtil.getIPV4Addresses;
 
+import java.awt.FlowLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,7 +36,7 @@ public class StartupPane {
 	private final JComboBox<String> hostIP = new JComboBox<String>();
 
 	private final JLabel joinLabel = new JLabel("Join:");
-	private final JTextField joinAddr = new JTextField();
+	private final JTextField joinAddr = new JTextField("255.255.255.255");
 
 	private final JLabel aiLabel = new JLabel("AIs:");
 	private final JComboBox<GameListener> comboAI = new JComboBox<GameListener>();
@@ -59,9 +58,9 @@ public class StartupPane {
 
 		comboAI.setModel(new DefaultComboBoxModel<GameListener>(ais));
 		hostIP.setModel(new DefaultComboBoxModel<String>(getIPV4Addresses()));
-
-		connectionPane.setLayout(new BoxLayout(connectionPane, Y_AXIS));
-
+		
+		connectionPane.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 0));
+		
 		ButtonGroup group = new ButtonGroup();
 		radioHost = new JRadioButton();
 		radioJoin = new JRadioButton();
@@ -75,7 +74,7 @@ public class StartupPane {
 		addEntry(connectionPane, radioHost, hostLabel, hostIP);
 		addEntry(connectionPane, radioJoin, joinLabel, joinAddr);
 		addEntry(connectionPane, radioAi, aiLabel, comboAI);
-
+		
 		connectionPane.add(startBtn);
 
 		parent.add(connectionPane);
@@ -83,9 +82,9 @@ public class StartupPane {
 		bindActions();
 	}
 
-	private static void addEntry(JPanel container, JComponent c0, JComponent c1, JComponent c2) {
+	private static void addEntry(Container container, JComponent c0, JComponent c1, JComponent c2) {
 		JPanel p = new JPanel();
-		p.setLayout(new BoxLayout(p, X_AXIS));
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		if (c0 != null) {
 			p.add(c0);
 		}
