@@ -7,11 +7,7 @@ import rps.game.data.FigureKind;
 import rps.game.data.Move;
 import rps.game.data.Player;
 
-/*
 
-	Käsekuchen!!!!!
-
-*/
 
 public class ValidatingGame implements Game {
 
