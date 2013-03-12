@@ -6,13 +6,13 @@ import java.awt.Component;
 import java.awt.event.*;
 
 /**
- * creates a dialog for the rules of the game
- * @author Felix Klose, Sarah Lettmann
+ * creates a dialog to show the credits of the game
+ * @author Sarah Lettmann
  *
  */
-public class RulesDialog extends JDialog implements ActionListener{
-	
-	public static final long serialVersionUID = 42L;
+public class CreditDialog extends JDialog implements ActionListener{
+
+	static final long serialVersionUID = 11L;
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -25,22 +25,22 @@ public class RulesDialog extends JDialog implements ActionListener{
 		}
 	}
 	
-	ImageIcon image = new ImageIcon(System.getProperty("user.dir") + "/data/spielregeln.png");
+	ImageIcon image = new ImageIcon(System.getProperty("user.dir") + "/data/credits.png");
 	
-	JLabel rules = new JLabel();
+	JLabel credits = new JLabel();
 	JButton exit = new JButton();
 	
-	public RulesDialog(JFrame parent) {
+	public CreditDialog(JFrame parent) {
 		
-		super(parent, "Spielregeln", true);
+		super(parent, "Credits", true);
 		
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		
-		rules.setAlignmentX(Component.CENTER_ALIGNMENT);
-		rules.setIcon(image);
-		rules.setDisabledIcon(image);
+		credits.setAlignmentX(Component.CENTER_ALIGNMENT);
+		credits.setIcon(image);
+		credits.setDisabledIcon(image);
 		
-		getContentPane().add(rules);
+		getContentPane().add(credits);
 		
 		exit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		exit.setText("Zurück");
@@ -56,4 +56,5 @@ public class RulesDialog extends JDialog implements ActionListener{
 		setResizable(false);
 		setVisible(true);
 	}
+	
 }

@@ -7,6 +7,11 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+/**
+ * creates the fields of the board and manages the dark and light fieldimages
+ * @author Felix Klose
+ *
+ */
 public class GameSquare extends JButton {
 
 	static final long serialVersionUID = 1L;
@@ -73,13 +78,18 @@ public class GameSquare extends JButton {
 		
 	}
 	
+	/**
+	 * @param type setting type of the field
+	 */
 	public void setType(int type) {
 		this.type = type;
 		setImage();
 	}
 	
+	/**
+	 * Set Image depending on backgroundcolor and figure-type
+	 */
 	private void setImage() {
-		//Set Image depending on backgroundcolor and figure-type
 		switch(type) {
 		case 0:
 			if(darkField)
@@ -127,18 +137,30 @@ public class GameSquare extends JButton {
 		
 	}
 	
+	/**
+	 * @return the type of the field
+	 */
 	public int getType() {
 		return type;
 	}
 	
+	/**
+	 * @return the row of the field
+	 */
 	public int getRow() {
 		return row;
 	}
 	
+	/**
+	 * @return the column of the field
+	 */
 	public int getColumn() {
 		return column;
 	}
 	
+	/**
+	 * @param icon setting the icon of the field
+	 */
 	public void setIcon(ImageIcon icon) {
 		super.setIcon(icon);
 		super.setDisabledIcon(icon);

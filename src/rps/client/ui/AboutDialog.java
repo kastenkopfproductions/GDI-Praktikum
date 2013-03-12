@@ -5,6 +5,11 @@ import javax.swing.*;
 import java.awt.Component;
 import java.awt.event.*;
 
+/**
+ * creates the About-Dialog for the menu
+ * @author Sarah Lettmann
+ *
+ */
 public class AboutDialog extends JDialog implements ActionListener{
 
 	static final long serialVersionUID = 23L;
@@ -20,6 +25,7 @@ public class AboutDialog extends JDialog implements ActionListener{
 		}
 	}
 	
+	//picture of the About-Dialog
 	ImageIcon image = new ImageIcon(System.getProperty("user.dir") + "/data/about_dialog.png");
 	
 	JLabel about = new JLabel();

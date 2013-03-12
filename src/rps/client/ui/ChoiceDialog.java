@@ -7,6 +7,11 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
+/**
+ * creates the Choice-Dialog to set a choice
+ * @author Felix Klose
+ *
+ */
 public class ChoiceDialog extends JDialog implements ActionListener{
 	
 	static final long serialVersionUID = 14L;
@@ -60,10 +65,17 @@ public class ChoiceDialog extends JDialog implements ActionListener{
 		setVisible(true);
 	}
 	
+	/**
+	 * getting the chosen figure
+	 * @return
+	 */
 	public FigureKind getResult() {
 		return result;
 	}
 	
+	/**
+	 * sets the chosen figure
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e)  {
 		if(e.getSource() instanceof JButton) {

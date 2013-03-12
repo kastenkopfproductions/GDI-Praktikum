@@ -107,7 +107,9 @@ public class UIController {
 				locked = true;
 			}
 		} else {
-			if(actSquare != lockField && actSquare.getType() == 0) {
+			if(actSquare != lockField && actSquare.getType() == 0 && 
+				(actSquare.getRow() == lockField.getRow()+1 || actSquare.getRow() == lockField.getRow()-1) ^
+				(actSquare.getColumn() == lockField.getColumn()+1 || actSquare.getColumn() == lockField.getColumn()-1)) {
 				actSquare.setType(lockField.getType());
 				lockField.setType(0);
 			}

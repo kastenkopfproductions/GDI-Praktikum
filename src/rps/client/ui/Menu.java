@@ -11,6 +11,9 @@ import javax.swing.JMenuItem;
 
 import rps.client.UIController;
 
+/**
+ * creates the menu of the game
+ */
 public class Menu {
 
 	private final JFrame frame;
@@ -24,6 +27,7 @@ public class Menu {
 	private final JMenu menuHelp = new JMenu("Hilfe");
 	private final JMenuItem menuHelpRules = new JMenuItem("Spielregeln");
 	private final JMenuItem menuHelpAbout = new JMenuItem("Über Stein, Papier, Schere");
+	private final JMenuItem menuHelpCredits = new JMenuItem("Credits");
 
 	public Menu(JFrame frame, UIController controller) {
 
@@ -47,12 +51,17 @@ public class Menu {
 		menuHelp.add(menuHelpRules);
 		menuHelp.addSeparator();
 		menuHelp.add(menuHelpAbout);
+		menuHelp.addSeparator();
+		menuHelp.add(menuHelpCredits);
 		frame.setJMenuBar(menuBar);
 
 		menuGameSurrender.setEnabled(false);
 		menuGameNew.setEnabled(false);
 	}
 
+	/**
+	 * associates the actions of the menu to dialogs, new games, etc.
+	 */
 	private void bindMenuActions() {
 		menuGameSurrender.addActionListener(new ActionListener() {
 			@Override
@@ -84,6 +93,12 @@ public class Menu {
 			@Override
 			public void actionPerformed(ActionEvent arg1) {
 				new AboutDialog(null);
+			}
+		});
+		menuHelpCredits.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg2) {
+				new CreditDialog(null);
 			}
 		});
 	}

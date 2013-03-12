@@ -32,6 +32,7 @@ public class GamePane implements ActionListener{
 	private final JTextField chatInput = new JTextField();
 	private final JTextArea chat = new JTextArea(4, 30);
 	private final JScrollPane scrollPane = new JScrollPane(chat);
+	private final JTextArea status = new JTextArea(1, 30);
 	private final JPanel boardPanel = new JPanel(new GridLayout(6, 7));
 	private final GameSquare fields[][] = new GameSquare[6][7];
 	private final UIController controller;
@@ -48,6 +49,11 @@ public class GamePane implements ActionListener{
 		}	
 	}
 
+	/**
+	 * initializes the panel for the board the status line and chat
+	 * @param parent container for the panel gamePane
+	 * @param controller UIController 
+	 */
 	public GamePane(Container parent, UIController controller) {
 
 		this.controller = controller;
@@ -56,12 +62,13 @@ public class GamePane implements ActionListener{
 		//Init the gameboard and add it to the gamePane
 		initBoardPanel();
 		gamePane.add(boardPanel);
-		
-		gamePane.add(chatInput);
+		gamePane.add(status);
 		gamePane.add(scrollPane);
-
+		gamePane.add(chatInput);
+		
 		chat.setLineWrap(true);
 		chat.setEditable(false);
+		status.setEditable(false);
 
 		gamePane.setVisible(false);
 		
@@ -137,7 +144,9 @@ public class GamePane implements ActionListener{
 		}
 	}
 	
-	//Initialize the buttons on the board
+	/**
+	 * Initialize the buttons on the board
+	 */
 	private void initBoardPanel() {		
 		
 		boardPanel.setBackground(Color.BLACK);
@@ -151,6 +160,10 @@ public class GamePane implements ActionListener{
 		}
 	}
 	
+	/**
+	 * takes over the starting grid formation
+	 * @param figures figures of the starting grid formation
+	 */
 	public void setInitialAssignment(FigureKind[] figures) {
 		for(int i = 0; i < 2; i++) {
 			for(int j = 0; j < 7; j++) {
@@ -173,5 +186,12 @@ public class GamePane implements ActionListener{
 				}
 			}
 		}
+	}
+	
+	/**
+	 * writes the actual event into the status line
+	 */
+	public void setStatusUpdate() {
+		
 	}
 }
