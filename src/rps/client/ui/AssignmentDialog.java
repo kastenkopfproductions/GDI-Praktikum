@@ -1,7 +1,7 @@
 package rps.client.ui;
 
 import static javax.swing.JOptionPane.showMessageDialog;
-import rps.game.data.FigureKind;
+import rps.game.FigureKind;
 
 import javax.swing.*;
 

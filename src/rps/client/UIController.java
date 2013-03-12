@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 
 import rps.client.ui.AssignmentDialog;
 import rps.client.ui.ChoiceDialog;
-import rps.game.data.FigureKind;
+import rps.game.FigureKind;
 
 import rps.client.ui.GamePane;
 import rps.client.ui.GameSquare;

@@ -4,17 +4,17 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import rps.client.GameListener;
+import rps.game.FigureKind;
 import rps.game.Game;
 import rps.game.data.Figure;
-import rps.game.data.FigureKind;
 import rps.game.data.Move;
 import rps.game.data.Player;
 
-import static rps.game.data.FigureKind.FLAG;
-import static rps.game.data.FigureKind.PAPER;
-import static rps.game.data.FigureKind.ROCK;
-import static rps.game.data.FigureKind.SCISSORS;
-import static rps.game.data.FigureKind.TRAP;
+import static rps.game.FigureKind.FLAG;
+import static rps.game.FigureKind.PAPER;
+import static rps.game.FigureKind.ROCK;
+import static rps.game.FigureKind.SCISSORS;
+import static rps.game.FigureKind.TRAP;
 
 /**
  * This class contains a very basic AI, that allows to play a game against it.

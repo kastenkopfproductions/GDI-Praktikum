@@ -1,6 +1,5 @@
 package rps.client.ui;
 
-import rps.game.data.FigureKind;
 import rps.client.UIController;
 
 import static javax.swing.BoxLayout.Y_AXIS;
@@ -22,6 +21,7 @@ import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
 
+import rps.game.FigureKind;
 import rps.game.Game;
 import rps.game.data.Player;
 import rps.client.ui.GameSquare;

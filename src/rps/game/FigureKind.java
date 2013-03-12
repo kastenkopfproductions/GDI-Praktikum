@@ -1,4 +1,6 @@
-package rps.game.data;
+package rps.game;
+
+import rps.game.data.AttackResult;
 
 public enum FigureKind {
 	ROCK, PAPER, SCISSORS, LIZARD, SPOCK, FLAG, TRAP, HIDDEN;
