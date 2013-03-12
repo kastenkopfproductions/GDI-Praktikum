@@ -7,7 +7,6 @@ import rps.game.data.FigureKind;
 import rps.game.data.Move;
 import rps.game.data.Player;
 
-
 /**
  * This decorator is used to remove all information from get* methods that are
  * not visible for the corresponding player. Most importantly this is the
@@ -17,9 +16,11 @@ import rps.game.data.Player;
 public class FigureHidingGame implements Game {
 
 	private final Game game;
-
-	public FigureHidingGame(Game game) throws RemoteException {
+	private final Player player;
+	
+	public FigureHidingGame(Game game, Player player) throws RemoteException {
 		this.game = game;
+		this.player = player;
 	}
 
 	@Override
@@ -28,8 +29,15 @@ public class FigureHidingGame implements Game {
 	}
 
 	@Override
-	public Figure[] getField(Player p) throws RemoteException {
-		return game.getField(p);
+	public Figure[] getField() throws RemoteException {
+		Figure[] retField = this.game.getField().clone();
+		for(int i = 0; i < retField.length; i++) {
+			if (retField[i].belongsTo(this.player)) {
+				retField[i] = retField[i].cloneWithHiddenKind();
+			}
+		}
+		
+		return retField;
 	}
 
 	@Override
@@ -38,8 +46,8 @@ public class FigureHidingGame implements Game {
 	}
 
 	@Override
-	public Move getLastMove(Player p) throws RemoteException {
-		return game.getLastMove(p);
+	public Move getLastMove() throws RemoteException {
+		return game.getLastMove();
 	}
 
 	@Override
