@@ -80,6 +80,7 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 				firstKlick = false;
 			} else if(!firstKlick && !thirdKlick) {
 				actSquare.setType(4);
+				randomAssignment();
 				thirdKlick = true;
 			} else if(thirdKlick && !firstKlick) {
 				firstField = actSquare;
@@ -175,6 +176,9 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 	 * a random starting grid formation
 	 */
 	public void randomAssignment() {
+		
+		thirdKlick = true;
+		firstKlick = false;
 		
 		int numRock = 4;
 		int numPaper = 4;
