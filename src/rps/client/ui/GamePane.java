@@ -14,6 +14,7 @@ import java.rmi.RemoteException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -32,7 +33,8 @@ public class GamePane implements ActionListener{
 	private final JTextField chatInput = new JTextField();
 	private final JTextArea chat = new JTextArea(4, 30);
 	private final JScrollPane scrollPane = new JScrollPane(chat);
-	private final JTextArea status = new JTextArea(1, 30);
+	private final JPanel status = new JPanel();
+	private final JLabel statusNews = new JLabel();
 	private final JPanel boardPanel = new JPanel(new GridLayout(6, 7));
 	private final GameSquare fields[][] = new GameSquare[6][7];
 	private final UIController controller;
@@ -62,14 +64,15 @@ public class GamePane implements ActionListener{
 		//Init the gameboard and add it to the gamePane
 		initBoardPanel();
 		gamePane.add(boardPanel);
-		gamePane.add(status);
 		gamePane.add(scrollPane);
 		gamePane.add(chatInput);
+		status.add(statusNews);
+		status.setSize(20, 100);
+		gamePane.add(status);
 		
 		chat.setLineWrap(true);
 		chat.setEditable(false);
-		status.setEditable(false);
-
+		
 		gamePane.setVisible(false);
 		
 		parent.add(gamePane);
