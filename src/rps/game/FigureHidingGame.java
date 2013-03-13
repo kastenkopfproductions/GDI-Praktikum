@@ -22,10 +22,6 @@ public class FigureHidingGame implements Game {
 		this.player = player;
 	}
 
-	@Override
-	public void setInitialAssignment(Player p, FigureKind[] assignment) throws RemoteException {
-		game.setInitialAssignment(p, assignment);
-	}
 
 	@Override
 	public Figure[] getField() throws RemoteException {
@@ -55,16 +51,6 @@ public class FigureHidingGame implements Game {
 	}
 
 	@Override
-	public void setInitialChoice(Player p, FigureKind kind) throws RemoteException {
-		game.setInitialChoice(p, kind);
-	}
-
-	@Override
-	public void setUpdatedKindAfterDraw(Player p, FigureKind kind) throws RemoteException {
-		game.setUpdatedKindAfterDraw(p, kind);
-	}
-
-	@Override
 	public void surrender(Player p) throws RemoteException {
 		game.surrender(p);
 	}
@@ -72,5 +58,32 @@ public class FigureHidingGame implements Game {
 	@Override
 	public Player getOpponent(Player p) throws RemoteException {
 		return game.getOpponent(p);
+	}
+
+
+	@Override
+	public void setInitialAssignment(Player p,
+			rps.game.data.FigureKind[] assignment) throws RemoteException {
+		// TODO Auto-generated method stub
+		game.setInitialAssignment(p, assignment);
+		
+	}
+
+
+	@Override
+	public void setInitialChoice(Player p, rps.game.data.FigureKind kind)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		game.setInitialChoice(p, kind);
+		
+	}
+
+
+	@Override
+	public void setUpdatedKindAfterDraw(Player p, rps.game.data.FigureKind kind)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		game.setUpdatedKindAfterDraw(p, kind);
+		
 	}
 }

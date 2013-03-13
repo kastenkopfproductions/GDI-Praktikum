@@ -12,9 +12,15 @@ import rps.game.data.Player;
  */
 public class TournamentAi implements GameListener {
 
+	Player player;
+	
 	private final int maxDurationForMoveInMilliSeconds;
 	private final int maxDurationForAllMovesInMilliSeconds;
 
+	public Player getPlayer() {
+		return player;
+	}
+	
 	public TournamentAi(int maxDurationForMoveInMilliSeconds, int maxDurationForAllMovesInMilliSeconds) {
 		this.maxDurationForMoveInMilliSeconds = maxDurationForMoveInMilliSeconds;
 		this.maxDurationForAllMovesInMilliSeconds = maxDurationForAllMovesInMilliSeconds;

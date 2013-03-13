@@ -19,8 +19,8 @@ public class GameImpl implements Game {
 	private Move lastMove;
 	private Figure[] field;
 	
-	private FigureKind choice1 = null;
-	private FigureKind choice2 = null;
+	private rps.game.data.FigureKind choice1 = null;
+	private rps.game.data.FigureKind choice2 = null;
 	
 	
 	public GameImpl(GameListener listener1, GameListener listener2) {
@@ -37,44 +37,12 @@ public class GameImpl implements Game {
 	}
 
 	@Override
-	public void setInitialAssignment(Player p, FigureKind[] assignment) throws RemoteException {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < assignment.length; i++) {
-			if (assignment[i] != null && this.field[i] == null) {
-				field[i] = new Figure(assignment[i], p);
-			} else if (this.field[i] != null) {
-				System.out.println("Error while trying to make initial assignment of player " + p);
-				System.out.println("Field " + i + " is already occupied");
-			}
-		}
-	}
-
-	@Override
-	public void setInitialChoice(Player p, FigureKind kind) throws RemoteException {
-		// TODO Auto-generated method stub
-		if (listener1.getPlayer().equals(p)) {
-			choice1 = kind;
-		} else if (listener2.getPlayer().equals(p)) {
-			choice2 = kind;
-		} else {
-			System.out.println("unknown player tried to set initial choice: " + p);
-		}
-	}
-
-	@Override
 	public void move(Player movingPlayer, int fromIndex, int toIndex) throws RemoteException {
 		// TODO Auto-generated method stub
 		this.lastMove = new Move(fromIndex, toIndex, this.field.clone());
 
 		this.field[toIndex] = this.field[fromIndex];
 		this.field[fromIndex] = null;
-	}
-
-	@Override
-	public void setUpdatedKindAfterDraw(Player p, FigureKind kind) throws RemoteException {
-		listener1.chatMessage(p, "mein stein is jetz ne ente");
-		listener2.chatMessage(p, "mein stein is jetz ne ente");
-		// TDO Auto-generated method stub
 	}
 
 	@Override
@@ -112,5 +80,41 @@ public class GameImpl implements Game {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public void setInitialAssignment(Player p,
+			rps.game.data.FigureKind[] assignment) throws RemoteException {
+		for (int i = 0; i < assignment.length; i++) {
+			if (assignment[i] != null && this.field[i] == null) {
+				field[i] = new Figure(assignment[i], p);
+			} else if (this.field[i] != null) {
+				System.out.println("Error while trying to make initial assignment of player " + p);
+				System.out.println("Field " + i + " is already occupied");
+			}
+		}
+		
+	}
+
+	@Override
+	public void setInitialChoice(Player p, rps.game.data.FigureKind kind)
+			throws RemoteException {
+		if (listener1.getPlayer().equals(p)) {
+			choice1 = kind;
+		} else if (listener2.getPlayer().equals(p)) {
+			choice2 = kind;
+		} else {
+			System.out.println("unknown player tried to set initial choice: " + p);
+		}
+		
+	}
+
+	@Override
+	public void setUpdatedKindAfterDraw(Player p, rps.game.data.FigureKind kind)
+			throws RemoteException {
+		listener1.chatMessage(p, "mein stein is jetz ne ente");
+		listener2.chatMessage(p, "mein stein is jetz ne ente");
+		// TODO Auto-generated method stub
+		
 	}
 }

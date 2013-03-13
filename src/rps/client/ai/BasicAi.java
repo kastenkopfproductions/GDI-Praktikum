@@ -4,17 +4,17 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import rps.client.GameListener;
-import rps.game.FigureKind;
+import rps.game.data.FigureKind;
 import rps.game.Game;
 import rps.game.data.Figure;
 import rps.game.data.Move;
 import rps.game.data.Player;
 
-import static rps.game.FigureKind.FLAG;
-import static rps.game.FigureKind.PAPER;
-import static rps.game.FigureKind.ROCK;
-import static rps.game.FigureKind.SCISSORS;
-import static rps.game.FigureKind.TRAP;
+import static rps.game.data.FigureKind.FLAG;
+import static rps.game.data.FigureKind.PAPER;
+import static rps.game.data.FigureKind.ROCK;
+import static rps.game.data.FigureKind.SCISSORS;
+import static rps.game.data.FigureKind.TRAP;
 
 /**
  * This class contains a very basic AI, that allows to play a game against it.
@@ -47,7 +47,7 @@ public class BasicAi implements GameListener {
 				null, null, null, null, null, null, null,
 				null, null, null, null, null, null, null,
 				ROCK, FLAG, ROCK, ROCK, ROCK, PAPER, PAPER,
-				PAPER, PAPER, SCISSORS, SCISSORS, SCISSORS, SCISSORS
+				PAPER, PAPER, SCISSORS, SCISSORS, SCISSORS, SCISSORS, TRAP
 		};
 		this.game.setInitialAssignment(this.player, assignment);
 	}
@@ -56,11 +56,11 @@ public class BasicAi implements GameListener {
 	public void provideInitialChoice() throws RemoteException {
 		int rnd = (int) (Math.random()*3);
 		if (rnd == 0) {
-			this.game.setInitialChoice(this.player, FigureKind.ROCK);
+			this.game.setInitialChoice(this.player, rps.game.data.FigureKind.ROCK);
 		} else if (rnd == 1) {
-			this.game.setInitialChoice(this.player, FigureKind.PAPER);
+			this.game.setInitialChoice(this.player, rps.game.data.FigureKind.PAPER);
 		} else if (rnd == 2) {
-			this.game.setInitialChoice(this.player, FigureKind.SCISSORS);
+			this.game.setInitialChoice(this.player, rps.game.data.FigureKind.SCISSORS);
 		} else {
 			System.out.println("WTF??? Randomed a value >= 3 for the initial choice!!!");
 		}
