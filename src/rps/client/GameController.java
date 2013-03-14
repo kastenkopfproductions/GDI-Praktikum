@@ -124,7 +124,7 @@ public class GameController implements GameListener {
 
 	@Override
 	public void startGame() throws RemoteException {
-		// TODO Auto-generated method stub
+		gamePane.setMove();
 
 	}
 
