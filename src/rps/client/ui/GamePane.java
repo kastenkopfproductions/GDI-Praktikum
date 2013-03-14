@@ -15,6 +15,7 @@ import java.rmi.RemoteException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -176,6 +177,18 @@ public class GamePane implements ActionListener{
 		}
 	}
 
+	public void lost() {
+		JOptionPane.showMessageDialog(null, "Boah bist du schlecht! Du hast VERLOREN!!!", "Verloren!", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void won() {
+		JOptionPane.showMessageDialog(null, "Du hast Gewonnen!! WUUUUHUUUUU...", "Gewonnen!", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void drawn() {
+		JOptionPane.showMessageDialog(null, "Ganz schwache Leistung... Unentschieden!!", "Unentschieden", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
 	/**
 	 * writes the actual event into the status line
 	 */
