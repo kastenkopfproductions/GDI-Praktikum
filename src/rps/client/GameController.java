@@ -151,19 +151,17 @@ public class GameController implements GameListener {
 
 	@Override
 	public void gameIsLost() throws RemoteException {
-		// TODO Auto-generated method stub
+		gamePane.lost();
 
 	}
 
 	@Override
 	public void gameIsWon() throws RemoteException {
-		// TODO Auto-generated method stub
-
+		gamePane.won();
 	}
 
 	@Override
 	public void gameIsDrawn() throws RemoteException {
-		// TODO Auto-generated method stub
-
+		gamePane.drawn();
 	}
 }

@@ -176,17 +176,40 @@ public class GamePane implements ActionListener{
 			fields[i + 28].setType(figures[i]);
 		}
 	}
+	
+	public void setInitialChoice() {
+		
+	}
+	
+	public void setNextMove() {
+		
+	}
+	
+	public void setMove() {
+		
+	}
+	
+	public void setAttack() {
+		
+	}
+	
+	public void setChoiceAfterFightIsDrawn() {
+		
+	}
 
 	public void lost() {
 		JOptionPane.showMessageDialog(null, "Boah bist du schlecht! Du hast VERLOREN!!!", "Verloren!", JOptionPane.INFORMATION_MESSAGE);
+		controller.switchBackToStartup();
 	}
 	
 	public void won() {
 		JOptionPane.showMessageDialog(null, "Du hast Gewonnen!! WUUUUHUUUUU...", "Gewonnen!", JOptionPane.INFORMATION_MESSAGE);
+		controller.switchBackToStartup();
 	}
 	
 	public void drawn() {
 		JOptionPane.showMessageDialog(null, "Ganz schwache Leistung... Unentschieden!!", "Unentschieden", JOptionPane.INFORMATION_MESSAGE);
+		controller.switchBackToStartup();
 	}
 	
 	/**
