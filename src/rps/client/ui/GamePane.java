@@ -223,7 +223,12 @@ public class GamePane implements ActionListener{
 	}
 	
 	public void setInitialChoice() {
-		
+		ChoiceDialog cd = new ChoiceDialog(null);
+		try {
+			game.setInitialChoice(player, cd.getResult());
+		} catch (RemoteException re) {
+			JOptionPane.showMessageDialog(null, "Die Verbindung zum Gegner ist weg.", "Fehler!", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public void setNextMove() {
