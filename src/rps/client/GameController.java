@@ -136,7 +136,7 @@ public class GameController implements GameListener {
 
 	@Override
 	public void figureMoved() throws RemoteException {
-
+		gamePane.setMove();
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class GameController implements GameListener {
 
 	@Override
 	public void provideChoiceAfterFightIsDrawn() throws RemoteException {
-		// TODO Auto-generated method stub
+		gamePane.setChoiceAfterFightIsDrawn();
 
 	}
 
