@@ -159,12 +159,10 @@ public class GameImpl implements Game {
 	public void sendMessage(Player p, String message) throws RemoteException {
 		listener1.chatMessage(p, message);
 		listener2.chatMessage(p, message);
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void setInitialAssignment(Player p, FigureKind[] assignment) throws RemoteException {
-		// TODO Auto-generated method stub
 		for (int i = 0; i < assignment.length; i++) {
 			if (assignment[i] != null && this.field[i] == null) {
 				field[i] = new Figure(assignment[i], p);
@@ -177,7 +175,6 @@ public class GameImpl implements Game {
 
 	@Override
 	public void setInitialChoice(Player p, FigureKind kind) throws RemoteException {
-		// TODO Auto-generated method stub
 		if (listener1.getPlayer().equals(p)) {
 			choice1 = kind;
 		} else if (listener2.getPlayer().equals(p)) {

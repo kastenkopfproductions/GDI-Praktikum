@@ -6,6 +6,7 @@ import static javax.swing.BoxLayout.Y_AXIS;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -103,8 +104,8 @@ public class GamePane implements ActionListener{
 		gamePane.add(boardPanel);
 		gamePane.add(scrollPane);
 		gamePane.add(chatInput);
+		status.setLayout(new FlowLayout(FlowLayout.LEFT));
 		status.add(statusNews);
-		status.setSize(20, 100);
 		gamePane.add(status);
 		
 		chat.setLineWrap(true);
@@ -209,6 +210,7 @@ public class GamePane implements ActionListener{
 	 * @param figures figures of the starting grid formation
 	 */
 	public void setInitialAssignment() {
+		setStatusUpdate("Legen Sie Ihre Startaufstellung fest...");
 		AssignmentDialog ad = new AssignmentDialog(null, player);
 		try {
 			Figure[] result = ad.getResult();
@@ -217,12 +219,14 @@ public class GamePane implements ActionListener{
 				assignment[i] = result[i].getKind();
 			}
 			game.setInitialAssignment(player, assignment);
+			setStatusUpdate("     ");
 		} catch (RemoteException re) {
 			JOptionPane.showMessageDialog(null, "Die Verbindung zum Gegner ist weg.", "Fehler!", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
 	public void setInitialChoice() {
+		setStatusUpdate("Wählen Sie eine Figur, um festzustellen wer beginnen darf...");
 		ChoiceDialog cd = new ChoiceDialog(null);
 		try {
 			game.setInitialChoice(player, cd.getResult());
@@ -251,6 +255,7 @@ public class GamePane implements ActionListener{
 	}
 	
 	public void setChoiceAfterFightIsDrawn() {
+		setStatusUpdate("Wählen Sie eine neue Figur...");
 		ChoiceDialog cd = new ChoiceDialog(null);
 		try {
 			game.setInitialChoice(player, cd.getResult());
@@ -277,8 +282,7 @@ public class GamePane implements ActionListener{
 	/**
 	 * writes the actual event into the status line
 	 */
-	public void setStatusUpdate() {
-		
+	public void setStatusUpdate(String text) {
 		statusNews.setText(text);
 	}
 }

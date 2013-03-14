@@ -113,6 +113,7 @@ public class GameController implements GameListener {
 		gamePane.setPlayer(player);
 		uiController.switchToGamePane();
 		gamePane.startGame(game);
+		gamePane.setStatusUpdate("");
 		gamePane.setInitialAssignment();
 	}
 
@@ -147,23 +148,27 @@ public class GameController implements GameListener {
 
 	@Override
 	public void provideChoiceAfterFightIsDrawn() throws RemoteException {
+		gamePane.setStatusUpdate("Wählen Sie eine Figur...");
 		gamePane.setChoiceAfterFightIsDrawn();
 
 	}
 
 	@Override
 	public void gameIsLost() throws RemoteException {
+		gamePane.setStatusUpdate("Spiel vorüber.");
 		gamePane.lost();
 
 	}
 
 	@Override
 	public void gameIsWon() throws RemoteException {
+		gamePane.setStatusUpdate("Spiel vorüber.");
 		gamePane.won();
 	}
 
 	@Override
 	public void gameIsDrawn() throws RemoteException {
+		gamePane.setStatusUpdate("Spiel vorüber.");
 		gamePane.drawn();
 	}
 }
