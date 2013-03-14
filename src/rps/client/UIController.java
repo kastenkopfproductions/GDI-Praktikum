@@ -21,9 +21,6 @@ public class UIController {
 	
 	Figure[] figures;
 	
-	private GameSquare lockField;
-	private boolean locked = false;
-	
 	private StartupPane startupPane;
 	private WaitingPane waitingPane;
 	private GamePane gamePane;
@@ -70,27 +67,7 @@ public class UIController {
 	}
 
 	public void switchToGamePane() {
-		AssignmentDialog ad = new AssignmentDialog(null, gamePane.getPlayer());
-		figures = ad.getResult();
-		ChoiceDialog cd = new ChoiceDialog(null);
-		FigureKind initialChoice = cd.getResult();
-		String sResult = "";
-		switch(initialChoice) {
-		case ROCK:
-			sResult = "Stein";
-			break;
-		case PAPER:
-			sResult = "Papier";
-			break;
-		case SCISSORS:
-			sResult = "Schere";
-			break;
-		default:
-			sResult = "Nichts";
-		}
-		JOptionPane.showMessageDialog(null, "Sie haben " + sResult + " gewählt!", "Juhu.", JOptionPane.INFORMATION_MESSAGE);
 		gamePane.reset();
-		gamePane.setInitialAssignment(figures);
 		menu.gameStarted();
 		waitingPane.hide();
 	}
@@ -98,33 +75,5 @@ public class UIController {
 	public void switchBackToStartup() {
 		waitingPane.hide();
 		startupPane.show();
-	}
-	
-	//Handles input during a game
-	public void handleGameInput(GameSquare actSquare) {
-		if(!locked) {
-			if(!(actSquare.getType().getKind() == null
-					|| actSquare.getType().getKind() == FigureKind.FLAG
-					|| actSquare.getType().getKind() == FigureKind.TRAP)) {
-				lockField = actSquare;
-				locked = true;
-			}
-		} else {
-			
-			int x1 = actSquare.getPosition() % 7;
-			int y1 = (actSquare.getPosition() - x1) / 6;
-			
-			int x2 = lockField.getPosition() % 7;
-			int y2 = (lockField.getPosition() - x2) / 6;
-			
-			if(actSquare != lockField && actSquare.getType().getKind() == null && (
-					((x1 == x2 + 1 || x1 == x2 - 1) && (y1 == y2)) ||
-					((y1 == y2 + 1 || y1 == y2 - 1) && (x1 == x2)))) {
-
-				actSquare.setType(lockField.getType());
-				lockField.setType(new Figure(null, null));
-			}
-			locked = false;
-		}
 	}
 }

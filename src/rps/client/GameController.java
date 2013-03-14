@@ -4,6 +4,8 @@ import static rps.network.NetworkUtil.hostNetworkGame;
 
 import java.rmi.RemoteException;
 
+import javax.swing.JOptionPane;
+
 import rps.client.ui.GamePane;
 import rps.game.Game;
 import rps.game.data.Player;
@@ -111,6 +113,7 @@ public class GameController implements GameListener {
 		gamePane.setPlayer(player);
 		uiController.switchToGamePane();
 		gamePane.startGame(game);
+		gamePane.setInitialAssignment();
 	}
 
 	@Override
@@ -127,13 +130,12 @@ public class GameController implements GameListener {
 
 	@Override
 	public void provideNextMove() throws RemoteException {
-		// TODO Auto-generated method stub
+		gamePane.setNextMove();
 
 	}
 
 	@Override
 	public void figureMoved() throws RemoteException {
-		// TODO Auto-generated method stub
 
 	}
 

@@ -40,16 +40,51 @@ public class GamePane implements ActionListener{
 	private final JPanel boardPanel = new JPanel(new GridLayout(6, 7));
 	private final GameSquare fields[] = new GameSquare[42];
 	private final UIController controller;
-
+	
 	private Game game;
 	private Player player;
+	
+	boolean locked = false;
+	GameSquare actSquare = null;
+	GameSquare lockField = null; 
+	
+	boolean movable;
 	
 	//The Input-Handler for the board-buttons
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//Call the UIController-Method that handles the gameInput
 		if(e.getSource() instanceof GameSquare) {
-			controller.handleGameInput((GameSquare)e.getSource());
+			if(movable) {
+				if(!locked) {
+					if(!(actSquare.getType().getKind() == null
+							|| actSquare.getType().getKind() == FigureKind.FLAG
+							|| actSquare.getType().getKind() == FigureKind.TRAP)) {
+						lockField = actSquare;
+						locked = true;
+					}
+				} else {
+					
+					int x1 = actSquare.getPosition() % 7;
+					int y1 = (actSquare.getPosition() - x1) / 6;
+					
+					int x2 = lockField.getPosition() % 7;
+					int y2 = (lockField.getPosition() - x2) / 6;
+					
+					if(actSquare != lockField && actSquare.getType().getKind() == null && (
+							((x1 == x2 + 1 || x1 == x2 - 1) && (y1 == y2)) ||
+							((y1 == y2 + 1 || y1 == y2 - 1) && (x1 == x2)))) {
+
+						try {
+							game.move(this.player, lockField.getPosition(), actSquare.getPosition());
+						} catch (RemoteException re) {
+							JOptionPane.showMessageDialog(null, "Die Verbindung zum Gegner ist weg.", "Fehler!", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					locked = false;
+					movable = false;
+				}
+			}
 		}	
 	}
 
@@ -59,7 +94,7 @@ public class GamePane implements ActionListener{
 	 * @param controller UIController 
 	 */
 	public GamePane(Container parent, UIController controller) {
-
+		
 		this.controller = controller;
 		gamePane.setLayout(new BoxLayout(gamePane, Y_AXIS));
 		
@@ -78,6 +113,8 @@ public class GamePane implements ActionListener{
 		gamePane.setVisible(false);
 		
 		parent.add(gamePane);
+		
+		movable = false;
 		
 		bindButtons();
 	}
@@ -171,9 +208,17 @@ public class GamePane implements ActionListener{
 	 * takes over the starting grid formation
 	 * @param figures figures of the starting grid formation
 	 */
-	public void setInitialAssignment(Figure[] figures) {
-		for(int i = 0; i < 14; i++) {
-			fields[i + 28].setType(figures[i]);
+	public void setInitialAssignment() {
+		AssignmentDialog ad = new AssignmentDialog(null, player);
+		try {
+			Figure[] result = ad.getResult();
+			FigureKind[] assignment = new FigureKind[14];
+			for(int i = 0; i < 14; i++) {
+				assignment[i] = result[i].getKind();
+			}
+			game.setInitialAssignment(player, assignment);
+		} catch (RemoteException re) {
+			JOptionPane.showMessageDialog(null, "Die Verbindung zum Gegner ist weg.", "Fehler!", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -182,11 +227,18 @@ public class GamePane implements ActionListener{
 	}
 	
 	public void setNextMove() {
-		
+		movable = true;
 	}
 	
 	public void setMove() {
-		
+		try {
+			Figure[] gameFields = game.getField();
+			for(int i = 0; i < 42; i++) {
+				fields[i].setType(gameFields[i]);
+			}
+		} catch (RemoteException re) {
+			JOptionPane.showMessageDialog(null, "Die Verbindung zum Gegner ist weg.", "Fehler!", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public void setAttack() {
@@ -194,7 +246,12 @@ public class GamePane implements ActionListener{
 	}
 	
 	public void setChoiceAfterFightIsDrawn() {
-		
+		ChoiceDialog cd = new ChoiceDialog(null);
+		try {
+			game.setInitialChoice(player, cd.getResult());
+		} catch (RemoteException re) {
+			JOptionPane.showMessageDialog(null, "Die Verbindung zum Gegner ist weg.", "Fehler!", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	public void lost() {
