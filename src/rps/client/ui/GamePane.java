@@ -22,7 +22,8 @@ import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
 
-import rps.game.FigureKind;
+import rps.game.data.FigureKind;
+import rps.game.data.Figure;
 import rps.game.Game;
 import rps.game.data.Player;
 import rps.client.ui.GameSquare;
@@ -36,7 +37,7 @@ public class GamePane implements ActionListener{
 	private final JPanel status = new JPanel();
 	private final JLabel statusNews = new JLabel();
 	private final JPanel boardPanel = new JPanel(new GridLayout(6, 7));
-	private final GameSquare fields[][] = new GameSquare[6][7];
+	private final GameSquare fields[] = new GameSquare[42];
 	private final UIController controller;
 
 	private Game game;
@@ -79,7 +80,6 @@ public class GamePane implements ActionListener{
 		
 		bindButtons();
 	}
-
 	
 	private void bindButtons() {
 		chatInput.addKeyListener(new KeyListener() {
@@ -113,6 +113,14 @@ public class GamePane implements ActionListener{
 			}
 		}
 	}
+	
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	
+	public Player getPlayer() {
+		return player;
+	}
 
 	public void hide() {
 		gamePane.setVisible(false);
@@ -122,8 +130,7 @@ public class GamePane implements ActionListener{
 		gamePane.setVisible(true);
 	}
 
-	public void startGame(Player player, Game game) {
-		this.player = player;
+	public void startGame(Game game) {
 		this.game = game;
 		gamePane.setVisible(true);
 	}
@@ -140,10 +147,8 @@ public class GamePane implements ActionListener{
 
 	public void reset() {
 		chat.setText(null);
-		for(int i = 0; i < 6; i++) {
-			for(int j = 0; j < 7; j++) {
-				fields[i][j].setType(0);
-			}
+		for(int i = 0; i < 42; i++) {
+			fields[i].setType(new Figure(null, null));
 		}
 	}
 	
@@ -155,11 +160,9 @@ public class GamePane implements ActionListener{
 		boardPanel.setBackground(Color.BLACK);
 		boardPanel.setBorder(BorderFactory.createEmptyBorder());
 		
-		for(int i = 0; i < 6; i++) {
-			for(int j = 0; j < 7; j++) {
-				fields[i][j] = new GameSquare(i, j, 0, this);
-				boardPanel.add(fields[i][j]);
-			}
+		for(int i = 0; i < 42; i++) {
+			fields[i] = new GameSquare(i, new Figure(null, null), this);
+			boardPanel.add(fields[i]);
 		}
 	}
 	
@@ -167,30 +170,12 @@ public class GamePane implements ActionListener{
 	 * takes over the starting grid formation
 	 * @param figures figures of the starting grid formation
 	 */
-	public void setInitialAssignment(FigureKind[] figures) {
-		for(int i = 0; i < 2; i++) {
-			for(int j = 0; j < 7; j++) {
-				switch(figures[j + i*7]) {
-				case ROCK:
-					fields[4+i][j].setType(1);
-					break;
-				case PAPER:
-					fields[4+i][j].setType(2);
-					break;
-				case SCISSORS:
-					fields[4+i][j].setType(3);
-					break;
-				case TRAP:
-					fields[4+i][j].setType(4);
-					break;
-				case FLAG:
-					fields[4+i][j].setType(5);
-					break;
-				}
-			}
+	public void setInitialAssignment(Figure[] figures) {
+		for(int i = 0; i < 14; i++) {
+			fields[i + 28].setType(figures[i]);
 		}
 	}
-	
+
 	/**
 	 * writes the actual event into the status line
 	 */

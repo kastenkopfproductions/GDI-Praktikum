@@ -1,7 +1,9 @@
 package rps.client.ui;
 
 import static javax.swing.JOptionPane.showMessageDialog;
-import rps.game.FigureKind;
+import rps.game.data.Figure;
+import rps.game.data.FigureKind;
+import rps.game.data.Player;
 
 import javax.swing.*;
 
@@ -25,23 +27,25 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 	private GameSquare firstField;
 	private GameSquare secondField;
 	
+	private Player player;
+	
 	JPanel boardPanel = new JPanel();
 	JButton randomButton = new JButton();
 	JButton doneButton = new JButton();
 	
-	GameSquare fields[][] = new GameSquare[6][7];
+	GameSquare fields[] = new GameSquare[14];
 	
-	FigureKind[] figures = new FigureKind[14];
+	Figure[] figures = new Figure[14];
 	
-	public AssignmentDialog(JFrame parentFrame) {
+	public AssignmentDialog(JFrame parentFrame, Player player) {
 		super(parentFrame, "Startaufstellungsassistent", true);
 		boardPanel.setLayout(new GridLayout(2, 7));
 		
-		for(int i = 0; i < 2; i++) {
-			for(int j = 0; j < 7; j++) {
-				fields[i][j] = new GameSquare(i, j, 0, this);
-				boardPanel.add(fields[i][j]);
-			}
+		this.player = player;
+		
+		for(int i = 0; i < 14; i++) {
+			fields[i] = new GameSquare(i, new Figure(null, null), this);
+			boardPanel.add(fields[i]);
 		}
 		
 		//initializes the buttons
@@ -76,10 +80,10 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 			GameSquare actSquare = (GameSquare)e.getSource();
 			//interchanges the figures
 			if(firstKlick && !thirdKlick) {
-				actSquare.setType(5);
+				actSquare.setType(new Figure(FigureKind.FLAG, player));
 				firstKlick = false;
 			} else if(!firstKlick && !thirdKlick) {
-				actSquare.setType(4);
+				actSquare.setType(new Figure(FigureKind.TRAP, player));
 				randomAssignment();
 				thirdKlick = true;
 			} else if(thirdKlick && !firstKlick) {
@@ -87,8 +91,8 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 				firstKlick = true;
 			} else if(thirdKlick && firstKlick) {
 				secondField = actSquare;
-				int x = firstField.getType();
-				int y = secondField.getType();
+				Figure x = firstField.getType();
+				Figure y = secondField.getType();
 					
 				actSquare.setType(x);
 				firstField.setType(y);
@@ -104,26 +108,8 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 			//sets the typ for the figures
 			else if(actButton.getName() == "done") {
 				if(fieldsValid()) {
-					for(int i = 0; i < 2; i++) {
-						for(int j = 0; j < 7; j++) {
-							switch(fields[i][j].getType()) {
-							case 1:
-								figures[j + 7*i] = FigureKind.ROCK;
-								break;
-							case 2:
-								figures[j + 7*i] = FigureKind.PAPER;
-								break;
-							case 3:
-								figures[j + 7*i] = FigureKind.SCISSORS;
-								break;
-							case 4:
-								figures[j + 7*i] = FigureKind.TRAP;
-								break;
-							case 5:
-								figures[j + 7*i] = FigureKind.FLAG;
-								break;
-							}
-						}
+					for(int i = 0; i < 14; i++) {
+						figures[i] = fields[i].getType();
 					}
 					setVisible(false);
 					dispose();
@@ -145,25 +131,23 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 		int numFlag = 0;
 		int numTrap = 0;
 		
-		for(int i = 0; i < 2; i++) {
-			for(int j = 0; j < 7; j++) {
-				switch(fields[i][j].getType()) {
-				case 1:
-					numRock++;
-					break;
-				case 2:
-					numPaper++;
-					break;
-				case 3:
-					numScissors++;
-					break;
-				case 4:
-					numTrap++;
-					break;
-				case 5:
-					numFlag++;
-					break;
-				}
+		for(int i = 0; i < 14; i++) {
+			switch(fields[i].getType().getKind()) {
+			case ROCK:
+				numRock++;
+				break;
+			case PAPER:
+				numPaper++;
+				break;
+			case SCISSORS:
+				numScissors++;
+				break;
+			case TRAP:
+				numTrap++;
+				break;
+			case FLAG:
+				numFlag++;
+				break;
 			}
 		}
 		
@@ -186,59 +170,56 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 		int numFlag = 1;
 		int numTrap = 1;
 		
-		for(int i = 0; i < 2; i++) {
-			for(int j = 0; j < 7; j++) {
-				if(fields[i][j].getType() == 4)
-					numTrap--; 
-				else if(fields[i][j].getType() == 5)
-					numFlag--;
-			}
+		for(int i = 0; i < 14; i++) {
+			if(fields[i].getType().getKind() == FigureKind.TRAP)
+				numTrap--; 
+			else if(fields[i].getType().getKind() == FigureKind.FLAG)
+				numFlag--;
 		}
 		
-		for(int i = 0; i < 2; i++) {
-			for(int j = 0; j < 7; j++) {
-				boolean valid = false;
-				if(fields[i][j].getType() == 4 || fields[i][j].getType() == 5)
-					valid = true;
-				while(!valid) {
-					int type = (int)(Math.random() * 5 + 1);
-					switch(type) {
-					case 1:
-						if(numRock > 0) {
-							numRock--;
-							fields[i][j].setType(type);
-							valid = true;
-						}
-						break;
-					case 2:
-						if(numPaper > 0) {
-							numPaper--;
-							fields[i][j].setType(type);
-							valid = true;
-						}
-						break;
-					case 3:
-						if(numScissors > 0) {
-							numScissors--;
-							fields[i][j].setType(type);
-							valid = true;
-						}
-						break;
-					case 4:
-						if(numTrap > 0) {
-							numTrap--;
-							fields[i][j].setType(type);
-							valid = true;
-						}
-						break;
-					case 5:
-						if(numFlag > 0) {
-							numFlag--;
-							fields[i][j].setType(type);
-							valid = true;
-						}
-						break;
+		for(int i = 0; i < 14; i++) {
+			boolean valid = false;
+			if(fields[i].getType().getKind() == FigureKind.TRAP ||
+					fields[i].getType().getKind() == FigureKind.FLAG)
+				valid = true;
+			while(!valid) {
+				int type = (int)(Math.random() * 5 + 1);
+				switch(type) {
+				case 1:
+					if(numRock > 0) {
+						numRock--;
+						fields[i].setType(new Figure(FigureKind.ROCK, player));
+						valid = true;
 					}
+					break;
+				case 2:
+					if(numPaper > 0) {
+						numPaper--;
+						fields[i].setType(new Figure(FigureKind.PAPER, player));
+						valid = true;
+					}
+					break;
+				case 3:
+					if(numScissors > 0) {
+						numScissors--;
+						fields[i].setType(new Figure(FigureKind.SCISSORS, player));
+						valid = true;
+					}
+					break;
+				case 4:
+					if(numTrap > 0) {
+						numTrap--;
+						fields[i].setType(new Figure(FigureKind.TRAP, player));
+						valid = true;
+					}
+					break;
+				case 5:
+					if(numFlag > 0) {
+						numFlag--;
+						fields[i].setType(new Figure(FigureKind.FLAG, player));
+						valid = true;
+					}
+					break;
 				}
 			}
 		}
@@ -248,7 +229,10 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 	 * getting the figures
 	 * @return the figures
 	 */
-	public FigureKind[] getResult() {
+	public Figure[] getResult() {
+		
+		showMessageDialog(null, "Ich gehöre " + player.getNick() + "!", "Error", JOptionPane.ERROR_MESSAGE);
+		
 		return figures;
 	}
 }

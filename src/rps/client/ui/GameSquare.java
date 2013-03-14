@@ -7,6 +7,9 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import rps.game.data.FigureKind;
+import rps.game.data.Figure;
+
 /**
  * creates the fields of the board and manages the dark and light fieldimages
  * @author Felix Klose
@@ -128,12 +131,10 @@ public class GameSquare extends JButton {
 	boolean darkField;
 	
 	//Position and type of the figure represented by this button
-	int row;
-	int column;
-	int type;				//0 is empty, 1 is rock, 2 is paper, 3 is scissors
-							//4 is trap and 5 is flag
+	int position;
+	Figure type;				
 
-	public GameSquare (int row, int column, int type, ActionListener listener) {
+	public GameSquare (int position, Figure type, ActionListener listener) {
 		
 		super();
 		
@@ -142,14 +143,13 @@ public class GameSquare extends JButton {
 		setBorder(BorderFactory.createEmptyBorder());
 
 		//Set backgroundcolor
-		darkField = ((row + 1) % 2 == (column + 1) % 2);
+		darkField = (position % 2 == 0);
 		
 		//Set Icon and type
 		setType(type);
 		
 		//Set position and Actionlistener
-		this.row = row;
-		this.column = column;
+		this.position = position;
 		this.addActionListener(listener);
 		
 	}
@@ -157,7 +157,7 @@ public class GameSquare extends JButton {
 	/**
 	 * @param type setting type of the field
 	 */
-	public void setType(int type) {
+	public void setType(Figure type) {
 		this.type = type;
 		setImage();
 	}
@@ -166,72 +166,64 @@ public class GameSquare extends JButton {
 	 * Set Image depending on backgroundcolor and figure-type
 	 */
 	private void setImage() {
-		switch(type) {
-		case 0:
+		if(type.getKind() != null)
+			switch(type.getKind()) {
+			case ROCK:
+				if(darkField)
+					this.setIcon(iRockNormalDark);
+				else
+					this.setIcon(iRockNormalLight);
+				break;
+			case PAPER:
+				if(darkField)
+					this.setIcon(iPaperNormalDark);
+				else
+					this.setIcon(iPaperNormalLight);
+				break;
+			case SCISSORS:
+				if(darkField)
+					this.setIcon(iScissorsNormalDark);
+				else
+					this.setIcon(iScissorsNormalLight);
+				break;
+			case TRAP:
+				if(darkField)
+					this.setIcon(iBombDark);
+				else
+					this.setIcon(iBombLight);
+				break;
+			case FLAG:
+				if(darkField)
+					this.setIcon(iFlagDark);
+				else
+					this.setIcon(iFlagLight);
+				break;
+			case HIDDEN:
+				if(darkField)
+					this.setIcon(iQuestionMarkNormalDark);
+				else
+					this.setIcon(iQuestionMarkNormalLight);
+			}
+		else {
 			if(darkField)
 				this.setIcon(iBgDark);
 			else
 				this.setIcon(iBgLight);
-			break;
-		case 1:
-			if(darkField)
-				this.setIcon(iRockNormalDark);
-			else
-				this.setIcon(iRockNormalLight);
-			break;
-		case 2:
-			if(darkField)
-				this.setIcon(iPaperNormalDark);
-			else
-				this.setIcon(iPaperNormalLight);
-			break;
-		case 3:
-			if(darkField)
-				this.setIcon(iScissorsNormalDark);
-			else
-				this.setIcon(iScissorsNormalLight);
-			break;
-		case 4:
-			if(darkField)
-				this.setIcon(iBombDark);
-			else
-				this.setIcon(iBombLight);
-			break;
-		case 5:
-			if(darkField)
-				this.setIcon(iFlagDark);
-			else
-				this.setIcon(iFlagLight);
-			break;
-		default:
-			if(darkField)
-				this.setIcon(iBgDark);
-			else
-				this.setIcon(iBgLight);
-			break;
 		}
-		
 	}
 	
 	/**
 	 * @return the type of the field
 	 */
-	public int getType() {
+	public Figure getType() {
 		return type;
 	}
 	
 	/**
-	 * @return the row of the field
+	 * @return the position; of the field
 	 */
-	public int getRow() {
-		return row;
-	}
-	
-	/**
-	 * @return the column of the field
-	 */
-	public int getColumn() {
-		return column;
+	public int getPosition() {
+		return position;
 	}
 	
 	/**

@@ -1,6 +1,6 @@
 package rps.client.ui;
 
-import rps.game.FigureKind;
+import rps.game.data.FigureKind;
 
 import javax.swing.*;
 

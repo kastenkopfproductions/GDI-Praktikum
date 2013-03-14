@@ -108,8 +108,9 @@ public class GameController implements GameListener {
 	@Override
 	public void provideInitialAssignment(Game game) throws RemoteException {
 		this.game = game;
+		gamePane.setPlayer(player);
 		uiController.switchToGamePane();
-		gamePane.startGame(player, game);
+		gamePane.startGame(game);
 	}
 
 	@Override
