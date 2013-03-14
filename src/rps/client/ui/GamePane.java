@@ -279,5 +279,6 @@ public class GamePane implements ActionListener{
 	 */
 	public void setStatusUpdate() {
 		
+		statusNews.setText(text);
 	}
 }
