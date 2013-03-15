@@ -43,7 +43,11 @@ public class BasicAi implements GameListener {
 		this.game = game;
 		FigureKind[] assignment = {
 				ROCK, FLAG, ROCK, ROCK, ROCK, PAPER, PAPER,
-				PAPER, PAPER, SCISSORS, SCISSORS, SCISSORS, SCISSORS, TRAP
+				PAPER, PAPER, SCISSORS, SCISSORS, SCISSORS, SCISSORS, TRAP,
+				null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null,
 		};
 		this.game.setInitialAssignment(this.player, assignment);
 	}
@@ -75,31 +79,38 @@ public class BasicAi implements GameListener {
 		ArrayList<Move> moves = new ArrayList<Move>();
 		
 		for (int i = 0; i < 42; i++) {
-			if (figures[i] != null && !(figures[i].belongsTo(this.player))) {
-				if (i%7 != 0) {
-					if(figures[i - 1] == null || !figures[i - 1].belongsTo(player))
+			if (figures[i] != null && (figures[i].belongsTo(this.player)) && 
+					!(figures[i].getKind() == TRAP || figures[i].getKind() == FLAG)) {
+				if (i%7 > 0) {
+					if(figures[i - 1] == null || 
+							(figures[i - 1] != null &&!figures[i - 1].belongsTo(player)))
 						moves.add(new Move(i, i-1, figures));
-				}
-				
-				if ((i+1)%7 != 0) {
-					if(figures[i + 1] == null || !figures[i + 1].belongsTo(player))
+				}				
+				if (i%7 < 6) {
+					if(figures[i + 1] == null || 
+							(figures[i + 1] != null &&!figures[i + 1].belongsTo(player)))
 						moves.add(new Move(i, i+1, figures));
 				}
 				
-				if (i <= 35) {
-					if(figures[i + 7] == null || !figures[i + 7].belongsTo(player))
+				if (i < 35) {
+					if(figures[i + 7] == null || 
+							(figures[i + 7] != null &&!figures[i + 7].belongsTo(player)))
 						moves.add(new Move(i, i+7, figures));
 				}
 				
-				if (i%7 >= 7) {
-					if(figures[i - 7] == null || !figures[i - 7].belongsTo(player))
+				if (i >= 7) {
+					if(figures[i - 7] == null || 
+							(figures[i - 7] != null &&!figures[i - 7].belongsTo(player)))
 						moves.add(new Move(i, i-7, figures));
 				}
 			}
 		}
 		
 		// get the "best" possible move
-		Move[] moveArray = (Move[]) moves.toArray();
+		Move[] moveArray = new Move[moves.size()];
+		for(int i = 0; i < moves.size(); i++) {
+			moveArray[i] = (Move)moves.get(i);
+		}
 		Move moveToDo = moveArray[(int)(Math.random()*moveArray.length)];
 		
 		// send move to game

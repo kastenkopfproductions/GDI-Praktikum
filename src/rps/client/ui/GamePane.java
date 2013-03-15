@@ -55,38 +55,47 @@ public class GamePane implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//Call the UIController-Method that handles the gameInput
-		if(e.getSource() instanceof GameSquare) {
-			if(movable) {
-				if(!locked) {
-					if(!(actSquare.getType().getKind() == null
-							|| actSquare.getType().getKind() == FigureKind.FLAG
-							|| actSquare.getType().getKind() == FigureKind.TRAP)) {
-						lockField = actSquare;
-						locked = true;
-					}
-				} else {
-					
-					int x1 = actSquare.getPosition() % 7;
-					int y1 = (actSquare.getPosition() - x1) / 6;
-					
-					int x2 = lockField.getPosition() % 7;
-					int y2 = (lockField.getPosition() - x2) / 6;
-					
-					if(actSquare != lockField && actSquare.getType().getKind() == null && (
-							((x1 == x2 + 1 || x1 == x2 - 1) && (y1 == y2)) ||
-							((y1 == y2 + 1 || y1 == y2 - 1) && (x1 == x2)))) {
-
-						try {
-							game.move(this.player, lockField.getPosition(), actSquare.getPosition());
-						} catch (RemoteException re) {
-							JOptionPane.showMessageDialog(null, "Die Verbindung zum Gegner ist weg.", "Fehler!", JOptionPane.ERROR_MESSAGE);
+		try {
+			if(e.getSource() instanceof GameSquare) {
+				actSquare = (GameSquare)e.getSource();
+				if(movable) {
+					if(!locked) {
+						if(!(game.getField()[actSquare.getPosition()] == null
+								|| actSquare.getType().getKind() == FigureKind.FLAG
+								|| actSquare.getType().getKind() == FigureKind.TRAP)
+								&& actSquare.getType().belongsTo(player)) {
+							lockField = actSquare;
+							locked = true;
 						}
+					} else {
+						
+						int x1 = actSquare.getPosition() % 7;
+						int y1 = (actSquare.getPosition() - x1) / 6;
+						
+						int x2 = lockField.getPosition() % 7;
+						int y2 = (lockField.getPosition() - x2) / 6;
+						
+						if(actSquare != lockField && 
+								(actSquare.getType().getKind() == null 
+								|| actSquare.getType().belongsTo(game.getOpponent(player))) 
+								&& (((x1 == x2 + 1 || x1 == x2 - 1) && (y1 == y2)) ||
+								((y1 == y2 + 1 || y1 == y2 - 1) && (x1 == x2)))) {
+	
+							try {
+								game.move(this.player, lockField.getPosition(), actSquare.getPosition());
+							} catch (RemoteException re) {
+								JOptionPane.showMessageDialog(null, "Die Verbindung zum Gegner ist weg.", "Fehler!", JOptionPane.ERROR_MESSAGE);
+							}
+						}
+						locked = false;
+						movable = false;
 					}
-					locked = false;
-					movable = false;
 				}
 			}
-		}	
+		}
+		catch(RemoteException re) {
+			System.exit(1337);
+		}
 	}
 
 	/**
@@ -214,9 +223,12 @@ public class GamePane implements ActionListener{
 		AssignmentDialog ad = new AssignmentDialog(null, player);
 		try {
 			Figure[] result = ad.getResult();
-			FigureKind[] assignment = new FigureKind[14];
+			FigureKind[] assignment = new FigureKind[42];
 			for(int i = 0; i < 14; i++) {
 				assignment[i] = result[i].getKind();
+			}
+			for(int i = 14; i < 42; i++) {
+				assignment[i] = null;
 			}
 			game.setInitialAssignment(player, assignment);
 			setStatusUpdate("     ");
@@ -236,11 +248,11 @@ public class GamePane implements ActionListener{
 	}
 	
 	public void setNextMove() {
+		setStatusUpdate("Machen Sie Ihren Zug...");
 		movable = true;
 	}
 	
 	public void setMove() {
-		setStatusUpdate("Machen Sie Ihren Zug...");
 		try {
 			Figure[] gameFields = game.getField();
 			for(int i = 0; i < 42; i++) {
@@ -273,16 +285,19 @@ public class GamePane implements ActionListener{
 
 	public void lost() {
 		JOptionPane.showMessageDialog(null, "Boah bist du schlecht! Du hast VERLOREN!!!", "Verloren!", JOptionPane.INFORMATION_MESSAGE);
+		this.hide();
 		controller.switchBackToStartup();
 	}
 	
 	public void won() {
 		JOptionPane.showMessageDialog(null, "Du hast Gewonnen!! WUUUUHUUUUU...", "Gewonnen!", JOptionPane.INFORMATION_MESSAGE);
+		this.hide();
 		controller.switchBackToStartup();
 	}
 	
 	public void drawn() {
 		JOptionPane.showMessageDialog(null, "Ganz schwache Leistung... Unentschieden!!", "Unentschieden", JOptionPane.INFORMATION_MESSAGE);
+		this.hide();
 		controller.switchBackToStartup();
 	}
 	

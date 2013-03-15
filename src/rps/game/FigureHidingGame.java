@@ -27,12 +27,12 @@ public class FigureHidingGame implements Game {
 	public Figure[] getField() throws RemoteException {
 		Figure[] retField = this.game.getField().clone();
 		for(int i = 0; i < retField.length; i++) {
-			if (retField[i].belongsTo(this.player)) {
+			if (retField[i] != null && !retField[i].belongsTo(this.player)) {
 				retField[i] = retField[i].cloneWithHiddenKind();
 			}
 		}
 		
-		return retField;
+		return this.game.getField();
 	}
 
 	@Override

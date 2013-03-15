@@ -169,6 +169,9 @@ public class GameSquare extends JButton {
 	 */
 	public void setType(Figure type, boolean lastMove, boolean wasAttacked) {
 		this.type = type;
+		if(this.type == null) {
+			this.type = new Figure(null, null);
+		}
 		this.lastMove = lastMove;
 		this.wasAttacked = wasAttacked;
 		setImage();
@@ -178,7 +181,7 @@ public class GameSquare extends JButton {
 	 * Set Image depending on backgroundcolor and figure-type
 	 */
 	private void setImage() {
-		if(type.getKind() != null)
+		if(type.getKind() != null) {
 			switch(type.getKind()) {
 			case ROCK:
 				if(darkField && !lastMove && wasAttacked)
@@ -264,6 +267,7 @@ public class GameSquare extends JButton {
 				else
 					this.setIcon(iQuestionMarkNormalLight);
 			}
+		}
 		else {
 			if(darkField)
 				this.setIcon(iBgDark);
