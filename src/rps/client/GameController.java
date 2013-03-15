@@ -107,6 +107,9 @@ public class GameController implements GameListener {
 		gamePane.receivedMessage(sender, message);
 	}
 
+	/**
+	 * manages all events of the assignmentdialog
+	 */
 	@Override
 	public void provideInitialAssignment(Game game) throws RemoteException {
 		this.game = game;
@@ -117,6 +120,9 @@ public class GameController implements GameListener {
 		gamePane.setInitialAssignment();
 	}
 
+	/**
+	 * event for the initial choice
+	 */
 	@Override
 	public void provideInitialChoice() throws RemoteException {
 		gamePane.setInitialChoice();
@@ -135,19 +141,27 @@ public class GameController implements GameListener {
 
 	}
 
+	/**
+	 * events for the moving of figures
+	 */
 	@Override
 	public void figureMoved() throws RemoteException {
 		gamePane.setMove();
 		gamePane.showLastMove(game.getLastMove().getTo());
 	}
 
+	/**
+	 * events when a figure was attacked
+	 */
 	@Override
 	public void figureAttacked() throws RemoteException {
 		gamePane.setAttack();
 		gamePane.showLastMove(game.getLastMove().getTo());
 	}
 
-	
+	/**
+	 * events when fight is drawn
+	 */
 	@Override
 	public void provideChoiceAfterFightIsDrawn() throws RemoteException {
 		gamePane.setStatusUpdate("Wählen Sie eine Figur...");
@@ -155,6 +169,9 @@ public class GameController implements GameListener {
 
 	}
 
+	/**
+	 * events when game is lost
+	 */
 	@Override
 	public void gameIsLost() throws RemoteException {
 		gamePane.setStatusUpdate("Spiel vorüber.");
@@ -162,12 +179,18 @@ public class GameController implements GameListener {
 
 	}
 
+	/**
+	 * events when game is won
+	 */
 	@Override
 	public void gameIsWon() throws RemoteException {
 		gamePane.setStatusUpdate("Spiel vorüber.");
 		gamePane.won();
 	}
 
+	/**
+	 * events when game is drawn
+	 */
 	@Override
 	public void gameIsDrawn() throws RemoteException {
 		gamePane.setStatusUpdate("Spiel vorüber.");
