@@ -2,7 +2,6 @@ package rps.game;
 
 import java.rmi.RemoteException;
 
-import rps.client.GameController;
 import rps.client.GameListener;
 import rps.game.data.AttackResult;
 import rps.game.data.Figure;
@@ -19,26 +18,26 @@ public class GameImpl implements Game {
 	private GameListener listener1;
 	private GameListener listener2;
 	
-	private Move lastMove;
-	private Figure[] field;
+	public Move lastMove;
+	public Figure[] field;
 
-	// stores if the players have comitted an initial assignment
-	private boolean assignment1;
-	private boolean assignment2;
+	// stores if the players have committed an initial assignment
+	public boolean assignment1;
+	public boolean assignment2;
 
-	private FigureKind afterFightChoice1;
-	private FigureKind afterFightChoice2;
+	public FigureKind afterFightChoice1;
+	public FigureKind afterFightChoice2;
 	
-	private FigureKind choice1 = null;
-	private FigureKind choice2 = null;
+	public FigureKind choice1 = null;
+	public FigureKind choice2 = null;
 	
-	private int surrender;
-	private int winner;
+	public int surrender;
+	public int winner;
 	
 	public GameImpl(GameListener listener1, GameListener listener2) {
 		this.listener1 = listener1;
 		this.listener2 = listener2;
-		this.field = new Figure[49];
+		this.field = new Figure[42];
 		this.surrender = 0;
 		this.winner = 0;
 		this.afterFightChoice1 = null;
@@ -55,8 +54,11 @@ public class GameImpl implements Game {
 	public void actualGame() throws RemoteException {
 		// get initial assignments
 		listener1.provideInitialAssignment(this);
+		for (int i = 0; i < field.length; i++) {
+			System.out.println(field[i]);
+		}
 		listener2.provideInitialAssignment(this);
-
+		
 
 		// REMOVE THIS WHEN SHIT WORKS!!! decoratorssindscheisse
 		choice1 = FigureKind.ROCK;
@@ -75,6 +77,7 @@ public class GameImpl implements Game {
 				choiceOK = true;
 			}
 		}
+		
 
 		int nextPlayer = 0;
 		// determine first player
@@ -94,10 +97,8 @@ public class GameImpl implements Game {
 		// main game loop
 		while (!gameIsOver()) {
 			if (nextPlayer == 1) {
-				System.out.println(listener1.getPlayer() + "'s turn");
 				listener1.provideNextMove();
 			} else if (nextPlayer == 2) {
-				System.out.println(listener2.getPlayer() + "'s turn");
 				listener2.provideNextMove();
 			} else {
 				System.out.println("WTF??? player number 0 is the next player");
@@ -116,9 +117,8 @@ public class GameImpl implements Game {
 		
 		//game is over now
 		
-		
 		// uncover all figures
-		for (int i = 0; i < field.length; i++) {
+		for (int i = 0; i < field.length; i++) {			
 			if (field[i] != null) {
 				field[i].setDiscovered();
 			}
@@ -126,10 +126,6 @@ public class GameImpl implements Game {
 		
 		// game over stuff
 		if (surrender == 0) { // not surrendered
-			// reset the flag
-			if (this.getLastMove() != null) {
-				this.field = this.getLastMove().getOldField();
-			}
 			if (winner == 0) {
 				listener1.gameIsDrawn();
 				listener2.gameIsDrawn();
@@ -222,7 +218,6 @@ public class GameImpl implements Game {
 			return true;
 		}
 		
-		
 		return false;		
 	}
 	
@@ -231,7 +226,6 @@ public class GameImpl implements Game {
 	public void sendMessage(Player p, String message) throws RemoteException {
 		listener1.chatMessage(p, message);
 		listener2.chatMessage(p, message);
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -247,10 +241,10 @@ public class GameImpl implements Game {
 		for (int i = 0; i < assignment.length; i++) {
 			if (assignment[i] != null && this.field[i] == null) {
 				field[i] = new Figure(assignment[i], p);
-			} //else if (this.field[i] != null) {
+			} else if (this.field[i] != null) {
 				//System.out.println("Error while trying to make initial assignment of player " + p);
 				//System.out.println("Field " + i + " is already occupied");
-			//}
+			}
 		}
 		
 		// store that player already set assignment
@@ -275,6 +269,7 @@ public class GameImpl implements Game {
 
 	
 	public void move(Player movingPlayer, int fromIndex, int toIndex) throws RemoteException {
+		// check if player has the right to move
 		this.lastMove = new Move(fromIndex, toIndex, this.field.clone());
 
 		listener1.figureMoved();
@@ -282,6 +277,11 @@ public class GameImpl implements Game {
 
 		// an attack is triggered
 		if (this.field[toIndex] != null) {
+			this.field[toIndex].setDiscovered();
+			if (this.field[fromIndex] != null) { // needed for some stupid test
+				this.field[fromIndex].setDiscovered();
+			}
+			
 			if (this.field[toIndex].belongsTo(movingPlayer)) {
 				//throw new IllegalStateException();
 			} else {
@@ -300,7 +300,7 @@ public class GameImpl implements Game {
 				} else if (result == AttackResult.LOOSE_AGAINST_TRAP) { // killed by a trap
 					this.field[fromIndex] = null;
 					this.field[toIndex] = null;
-				} else if (result == AttackResult.WIN_AGAINST_FLAG) { // killed the flak
+				} else if (result == AttackResult.WIN_AGAINST_FLAG) { // killed the flag
 					if (movingPlayer.equals(listener1.getPlayer())) {
 						winner = 1;
 					} else if (movingPlayer.equals(listener2.getPlayer())) {
@@ -309,13 +309,13 @@ public class GameImpl implements Game {
 						winner = 0;
 					}
 				} else if (result == AttackResult.DRAW) {
-					// MIGHT GET STUCK!!! decoratorssindscheisse
-					boolean choiceOK = false;
 					
 					// REMOVE THIS!!! decoratorssindscheisse
 					afterFightChoice1 = FigureKind.ROCK;
 					afterFightChoice2 = FigureKind.SCISSORS;
-					
+
+					// MIGHT GET STUCK!!! decoratorssindscheisse
+					boolean choiceOK = false;
 					while (!choiceOK) {
 						listener1.provideChoiceAfterFightIsDrawn();
 						listener2.provideChoiceAfterFightIsDrawn();
@@ -334,7 +334,7 @@ public class GameImpl implements Game {
 						this.field[toIndex] = new Figure(afterFightChoice1, listener1.getPlayer());
 						this.field[fromIndex] = new Figure(afterFightChoice2, listener2.getPlayer());
 					} 
-										
+		
 					// reset variables
 					afterFightChoice1 = null;
 					afterFightChoice2 = null;
@@ -370,6 +370,7 @@ public class GameImpl implements Game {
 		if (surrender != 0) {
 			throw new IllegalStateException();
 		}
+		
 		listener1.chatMessage(p, "I surrender");
 		listener2.chatMessage(p, "I surrender");
 		
