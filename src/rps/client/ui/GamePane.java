@@ -187,7 +187,7 @@ public class GamePane implements ActionListener{
 	public void reset() {
 		chat.setText(null);
 		for(int i = 0; i < 42; i++) {
-			fields[i].setType(new Figure(null, null));
+			fields[i].setType(new Figure(null, null), false, false);
 		}
 	}
 	
@@ -240,18 +240,25 @@ public class GamePane implements ActionListener{
 	}
 	
 	public void setMove() {
+		setStatusUpdate("Machen Sie Ihren Zug...");
 		try {
 			Figure[] gameFields = game.getField();
 			for(int i = 0; i < 42; i++) {
-				fields[i].setType(gameFields[i]);
+				fields[i].setType(gameFields[i], false, fields[i].wasAttacked);
 			}
+		setStatusUpdate("   ");	
 		} catch (RemoteException re) {
 			JOptionPane.showMessageDialog(null, "Die Verbindung zum Gegner ist weg.", "Fehler!", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
 	public void setAttack() {
-		
+		chatInput.setText("");
+	}
+	
+	public void showLastMove(int newIndex) throws RemoteException {
+		Figure[] gameFields = game.getField();
+		fields[newIndex].setType(gameFields[newIndex], true, fields[newIndex].wasAttacked);
 	}
 	
 	public void setChoiceAfterFightIsDrawn() {

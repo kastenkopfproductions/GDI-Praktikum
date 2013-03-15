@@ -80,10 +80,10 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 			GameSquare actSquare = (GameSquare)e.getSource();
 			//interchanges the figures
 			if(firstKlick && !thirdKlick) {
-				actSquare.setType(new Figure(FigureKind.FLAG, player));
+				actSquare.setType(new Figure(FigureKind.FLAG, player), false, false);
 				firstKlick = false;
 			} else if(!firstKlick && !thirdKlick) {
-				actSquare.setType(new Figure(FigureKind.TRAP, player));
+				actSquare.setType(new Figure(FigureKind.TRAP, player), false, false);
 				randomAssignment();
 				thirdKlick = true;
 			} else if(thirdKlick && !firstKlick) {
@@ -94,8 +94,8 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 				Figure x = firstField.getType();
 				Figure y = secondField.getType();
 					
-				actSquare.setType(x);
-				firstField.setType(y);
+				actSquare.setType(x, false, false);
+				firstField.setType(y, false, false);
 				
 				firstKlick = false;
 			}
@@ -188,35 +188,35 @@ public class AssignmentDialog extends JDialog implements ActionListener {
 				case 1:
 					if(numRock > 0) {
 						numRock--;
-						fields[i].setType(new Figure(FigureKind.ROCK, player));
+						fields[i].setType(new Figure(FigureKind.ROCK, player), false, false);
 						valid = true;
 					}
 					break;
 				case 2:
 					if(numPaper > 0) {
 						numPaper--;
-						fields[i].setType(new Figure(FigureKind.PAPER, player));
+						fields[i].setType(new Figure(FigureKind.PAPER, player), false, false);
 						valid = true;
 					}
 					break;
 				case 3:
 					if(numScissors > 0) {
 						numScissors--;
-						fields[i].setType(new Figure(FigureKind.SCISSORS, player));
+						fields[i].setType(new Figure(FigureKind.SCISSORS, player), false, false);
 						valid = true;
 					}
 					break;
 				case 4:
 					if(numTrap > 0) {
 						numTrap--;
-						fields[i].setType(new Figure(FigureKind.TRAP, player));
+						fields[i].setType(new Figure(FigureKind.TRAP, player), false, false);
 						valid = true;
 					}
 					break;
 				case 5:
 					if(numFlag > 0) {
 						numFlag--;
-						fields[i].setType(new Figure(FigureKind.FLAG, player));
+						fields[i].setType(new Figure(FigureKind.FLAG, player), false, false);
 						valid = true;
 					}
 					break;

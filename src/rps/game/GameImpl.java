@@ -387,13 +387,11 @@ public class GameImpl implements Game {
 
 	@Override
 	public Figure[] getField() throws RemoteException {
-		// TODO Auto-generated method stub
 		return this.field;
 	}
 
 	@Override
 	public Move getLastMove() throws RemoteException {
-		// TODO Auto-generated method stub
 		return this.lastMove;
 	}
 

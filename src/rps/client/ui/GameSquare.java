@@ -40,12 +40,16 @@ public class GameSquare extends JButton {
 	private static final String questionMarkNormalDark = data + "fragezeichen_normal_dunkelblau.png";
 	
 	//Imagepaths (not visible)
-	private static final String rockNormalLightNV = data + "stein_normal_hellblau_nv.png";
+	private static final String rockNormalLightNV = data + "/stein_normal_hellblau_nv.png";
 	private static final String rockNormalDarkNV = data + "/stein_normal_dunkelblau_nv.png";
 	private static final String paperNormalLightNV = data + "/papier_normal_hellblau_nv.png";
 	private static final String paperNormalDarkNV = data + "/papier_normal_dunkelblau_nv.png";
 	private static final String scissorsNormalLightNV = data + "/schere_normal_hellblau_nv.png";
 	private static final String scissorsNormalDarkNV = data + "/schere_normal_dunkelblau_nv.png";
+	private static final String bombDarkNV = data + "/bombe_dunkelblau_nv.png";
+	private static final String bombLighNV = data + "/bombe_hellblau_nv.png";
+	private static final String flagDarkNV = data + "/fahne_dunkelblau_nv.png";
+	private static final String flagLighNV = data + "/fahne_hellblau_nv.png";
 	
 	//Imagepaths (last move)
 	private static final String rockNormalLightLM = data + "/stein_normal_hellblau_lm.png";
@@ -72,8 +76,8 @@ public class GameSquare extends JButton {
 	private static final String paperNormalDarkPM = data + "/papier_normal_dunkelblau_pm.png";
 	private static final String scissorsNormalLightPM = data + "/schere_normal_hellblau_pm.png";
 	private static final String scissorsNormalDarkPM = data + "/schere_normal_dunkelblau_pm.png";
-	private static final String questionMarkNormalLightPM = data + "fragezeichen_normal_hellblau_pm.png";
-	private static final String questionMarkNormalDarkPM = data + "fragezeichen_normal_dunkelblau_pm.png";
+	private static final String questionMarkNormalLightPM = data + "/fragezeichen_normal_hellblau_pm.png";
+	private static final String questionMarkNormalDarkPM = data + "/fragezeichen_normal_dunkelblau_pm.png";
 	
 	//Images (visible)
 	private static final ImageIcon iBgLight = new ImageIcon(bgLight);
@@ -98,6 +102,10 @@ public class GameSquare extends JButton {
 	private static final ImageIcon iPaperNormalDarkNV = new ImageIcon(paperNormalDarkNV);
 	private static final ImageIcon iScissorsNormalLightNV = new ImageIcon(scissorsNormalLightNV);
 	private static final ImageIcon iScissorsNormalDarkNV = new ImageIcon(scissorsNormalDarkNV);
+	private static final ImageIcon iBombDarkNV = new ImageIcon(bombDarkNV);
+	private static final ImageIcon iBombLightNV = new ImageIcon(bombLighNV);
+	private static final ImageIcon iFlagDarkNV = new ImageIcon(flagDarkNV);
+	private static final ImageIcon iFlagLightNV = new ImageIcon(flagLighNV);
 	
 	//Images (last move)
 	private static final ImageIcon iRockNormalLightLM = new ImageIcon(rockNormalLightLM);
@@ -129,6 +137,8 @@ public class GameSquare extends JButton {
 	
 	//Controlls the backgroundcolor of the button
 	boolean darkField;
+	boolean lastMove = false;
+	boolean wasAttacked = false;
 	
 	//Position and type of the figure represented by this button
 	int position;
@@ -146,7 +156,7 @@ public class GameSquare extends JButton {
 		darkField = (position % 2 == 0);
 		
 		//Set Icon and type
-		setType(type);
+		setType(type, false, false);
 		
 		//Set position and Actionlistener
 		this.position = position;
@@ -157,8 +167,10 @@ public class GameSquare extends JButton {
 	/**
 	 * @param type setting type of the field
 	 */
-	public void setType(Figure type) {
+	public void setType(Figure type, boolean lastMove, boolean wasAttacked) {
 		this.type = type;
+		this.lastMove = lastMove;
+		this.wasAttacked = wasAttacked;
 		setImage();
 	}
 	
@@ -169,38 +181,86 @@ public class GameSquare extends JButton {
 		if(type.getKind() != null)
 			switch(type.getKind()) {
 			case ROCK:
-				if(darkField)
+				if(darkField && !lastMove && wasAttacked)
 					this.setIcon(iRockNormalDark);
+				else if(darkField && lastMove && wasAttacked)
+					this.setIcon(iRockNormalDarkLM);
+				else if(!darkField && lastMove && wasAttacked)
+					this.setIcon(iRockNormalLightLM);
+				else if(darkField && !lastMove &&!wasAttacked)
+					this.setIcon(iRockNormalDarkNV);
+				else if(!darkField && !lastMove && !wasAttacked)
+					this.setIcon(iRockNormalLightNV);
+				else if(darkField && lastMove && !wasAttacked)
+					this.setIcon(iRockNormalDarkNVLM);
+				else if(!darkField && lastMove && !wasAttacked)
+					this.setIcon(iRockNormalLightNVLM);
 				else
 					this.setIcon(iRockNormalLight);
 				break;
 			case PAPER:
-				if(darkField)
+				if(darkField && !lastMove && wasAttacked)
 					this.setIcon(iPaperNormalDark);
+				else if(darkField && lastMove && wasAttacked)
+					this.setIcon(iPaperNormalDarkLM);
+				else if(!darkField && lastMove && wasAttacked)
+					this.setIcon(iPaperNormalLightLM);
+				else if(darkField && !lastMove &&!wasAttacked)
+					this.setIcon(iPaperNormalDarkNV);
+				else if(!darkField && !lastMove && !wasAttacked)
+					this.setIcon(iPaperNormalLightNV);
+				else if(darkField && lastMove && !wasAttacked)
+					this.setIcon(iPaperNormalDarkNVLM);
+				else if(!darkField && lastMove && !wasAttacked)
+					this.setIcon(iPaperNormalLightNVLM);
 				else
 					this.setIcon(iPaperNormalLight);
 				break;
 			case SCISSORS:
-				if(darkField)
+				if(darkField && !lastMove && wasAttacked)
 					this.setIcon(iScissorsNormalDark);
+				else if(darkField && lastMove && wasAttacked)
+					this.setIcon(iScissorsNormalDarkLM);
+				else if(!darkField && lastMove && wasAttacked)
+					this.setIcon(iScissorsNormalLightLM);
+				else if(darkField && !lastMove &&!wasAttacked)
+					this.setIcon(iScissorsNormalDarkNV);
+				else if(!darkField && !lastMove && !wasAttacked)
+					this.setIcon(iScissorsNormalLightNV);
+				else if(darkField && lastMove && !wasAttacked)
+					this.setIcon(iScissorsNormalDarkNVLM);
+				else if(!darkField && lastMove && !wasAttacked)
+					this.setIcon(iScissorsNormalLightNVLM);
 				else
 					this.setIcon(iScissorsNormalLight);
 				break;
 			case TRAP:
-				if(darkField)
+				if(darkField && wasAttacked)
 					this.setIcon(iBombDark);
+				else if(darkField && !wasAttacked)
+					this.setIcon(iBombDarkNV);
+				else if(!darkField && !wasAttacked)
+					this.setIcon(iBombLightNV);
 				else
 					this.setIcon(iBombLight);
 				break;
 			case FLAG:
-				if(darkField)
+				if(darkField && wasAttacked)
 					this.setIcon(iFlagDark);
+				else if(darkField && !wasAttacked)
+					this.setIcon(iFlagDarkNV);
+				else if(!darkField && !wasAttacked)
+					this.setIcon(iFlagLightNV);
 				else
 					this.setIcon(iFlagLight);
 				break;
 			case HIDDEN:
-				if(darkField)
+				if(darkField && !lastMove)
 					this.setIcon(iQuestionMarkNormalDark);
+				else if(darkField && lastMove)
+					this.setIcon(iQuestionMarkNormalDarkLM);
+				else if(!darkField && lastMove)
+					this.setIcon(iQuestionMarkNormalLightLM);
 				else
 					this.setIcon(iQuestionMarkNormalLight);
 			}

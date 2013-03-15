@@ -142,10 +142,14 @@ public class GameController implements GameListener {
 
 	@Override
 	public void figureAttacked() throws RemoteException {
-		// TODO Auto-generated method stub
+		gamePane.setAttack();
 
 	}
 
+	public void setLastMoves() throws RemoteException {
+		gamePane.showLastMove(game.getLastMove().getTo());
+	}
+	
 	@Override
 	public void provideChoiceAfterFightIsDrawn() throws RemoteException {
 		gamePane.setStatusUpdate("Wählen Sie eine Figur...");
