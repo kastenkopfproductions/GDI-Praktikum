@@ -49,6 +49,10 @@ public class TournamentAi implements GameListener {
 	public void provideInitialAssignment(Game game) throws RemoteException {
 		this.game = game;
 		FigureKind[] assignment = {
+				null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null,
 				PAPER, ROCK, SCISSORS, TRAP, SCISSORS, ROCK, PAPER, 
 				ROCK, SCISSORS, PAPER, FLAG, PAPER, SCISSORS, ROCK
 		};
@@ -79,36 +83,42 @@ public class TournamentAi implements GameListener {
 		
 		moveCalculationStartedAt = System.nanoTime();
 
-		//Get all possible Moves
 		Figure[] figures = this.game.getField();
 		ArrayList<Move> moves = new ArrayList<Move>();
 		
 		for (int i = 0; i < 42; i++) {
-			if (figures[i] != null && !(figures[i].belongsTo(this.player))) {
-				if (i%7 != 0) {
-					if(figures[i - 1] == null || !figures[i - 1].belongsTo(player))
+			if (figures[i] != null && (figures[i].belongsTo(this.player)) && 
+					!(figures[i].getKind() == TRAP || figures[i].getKind() == FLAG)) {
+				if (i%7 > 0) {
+					if(figures[i - 1] == null || 
+							(figures[i - 1] != null &&!figures[i - 1].belongsTo(player)))
 						moves.add(new Move(i, i-1, figures));
-				}
-				
-				if ((i+1)%7 != 0) {
-					if(figures[i + 1] == null || !figures[i + 1].belongsTo(player))
+				}				
+				if (i%7 < 6) {
+					if(figures[i + 1] == null || 
+							(figures[i + 1] != null &&!figures[i + 1].belongsTo(player)))
 						moves.add(new Move(i, i+1, figures));
 				}
 				
-				if (i <= 35) {
-					if(figures[i + 7] == null || !figures[i + 7].belongsTo(player))
+				if (i < 35) {
+					if(figures[i + 7] == null || 
+							(figures[i + 7] != null &&!figures[i + 7].belongsTo(player)))
 						moves.add(new Move(i, i+7, figures));
 				}
 				
-				if (i%7 >= 7) {
-					if(figures[i - 7] == null || !figures[i - 7].belongsTo(player))
+				if (i >= 7) {
+					if(figures[i - 7] == null || 
+							(figures[i - 7] != null &&!figures[i - 7].belongsTo(player)))
 						moves.add(new Move(i, i-7, figures));
 				}
 			}
 		}
 		
 		// get the "best" possible move
-		Move[] moveArray = (Move[]) moves.toArray();
+		Move[] moveArray = new Move[moves.size()];
+		for(int i = 0; i < moves.size(); i++) {
+			moveArray[i] = (Move)moves.get(i);
+		}
 		
 		ArrayList<Move> maxMoves = new ArrayList<Move>();
 		
@@ -131,36 +141,42 @@ public class TournamentAi implements GameListener {
 	
 	public int maxValue(Figure[] state, int alpha, int beta, int k) throws RemoteException {
 		
-		//Get all possible Moves
 		Figure[] figures = this.game.getField();
 		ArrayList<Move> moves = new ArrayList<Move>();
-				
+		
 		for (int i = 0; i < 42; i++) {
-			if (figures[i] != null && !(figures[i].belongsTo(this.player))) {
-				if (i%7 != 0) {
-					if(figures[i - 1] == null || !figures[i - 1].belongsTo(player))
+			if (figures[i] != null && (figures[i].belongsTo(this.player)) && 
+					!(figures[i].getKind() == TRAP || figures[i].getKind() == FLAG)) {
+				if (i%7 > 0) {
+					if(figures[i - 1] == null || 
+							(figures[i - 1] != null &&!figures[i - 1].belongsTo(player)))
 						moves.add(new Move(i, i-1, figures));
-				}
-				
-				if ((i+1)%7 != 0) {
-					if(figures[i + 1] == null || !figures[i + 1].belongsTo(player))
+				}				
+				if (i%7 < 6) {
+					if(figures[i + 1] == null || 
+							(figures[i + 1] != null &&!figures[i + 1].belongsTo(player)))
 						moves.add(new Move(i, i+1, figures));
 				}
 				
-				if (i <= 35) {
-					if(figures[i + 7] == null || !figures[i + 7].belongsTo(player))
+				if (i < 35) {
+					if(figures[i + 7] == null || 
+							(figures[i + 7] != null &&!figures[i + 7].belongsTo(player)))
 						moves.add(new Move(i, i+7, figures));
 				}
 				
-				if (i%7 >= 7) {
-					if(figures[i - 7] == null || !figures[i - 7].belongsTo(player))
+				if (i >= 7) {
+					if(figures[i - 7] == null || 
+							(figures[i - 7] != null &&!figures[i - 7].belongsTo(player)))
 						moves.add(new Move(i, i-7, figures));
 				}
 			}
 		}
 		
 		// get the "best" possible move
-		Move[] moveArray = (Move[]) moves.toArray();
+		Move[] moveArray = new Move[moves.size()];
+		for(int i = 0; i < moves.size(); i++) {
+			moveArray[i] = (Move)moves.get(i);
+		}
 		
 		int actMax = -200;
 		
@@ -196,34 +212,40 @@ public class TournamentAi implements GameListener {
 		//Get all possible Moves
 		Figure[] figures = this.game.getField();
 		ArrayList<Move> moves = new ArrayList<Move>();
-				
+		
 		for (int i = 0; i < 42; i++) {
-			// check if it is your figure
-			if (figures[i] != null && !(figures[i].belongsTo(game.getOpponent(player)))) {
-				if (i%7 != 0) {
-					if(figures[i - 1] == null || figures[i - 1].belongsTo(player))
+			if (figures[i] != null && (figures[i].belongsTo(this.player)) && 
+					!(figures[i].getKind() == TRAP || figures[i].getKind() == FLAG)) {
+				if (i%7 > 0) {
+					if(figures[i - 1] == null || 
+							(figures[i - 1] != null &&!figures[i - 1].belongsTo(player)))
 						moves.add(new Move(i, i-1, figures));
-				}
-				
-				if ((i+1)%7 != 0) {
-					if(figures[i + 1] == null || figures[i + 1].belongsTo(player))
+				}				
+				if (i%7 < 6) {
+					if(figures[i + 1] == null || 
+							(figures[i + 1] != null &&!figures[i + 1].belongsTo(player)))
 						moves.add(new Move(i, i+1, figures));
 				}
 				
-				if (i <= 35) {
-					if(figures[i + 7] == null || figures[i + 7].belongsTo(player))
+				if (i < 35) {
+					if(figures[i + 7] == null || 
+							(figures[i + 7] != null &&!figures[i + 7].belongsTo(player)))
 						moves.add(new Move(i, i+7, figures));
 				}
 				
-				if (i%7 >= 7) {
-					if(figures[i - 7] == null || figures[i - 7].belongsTo(player))
+				if (i >= 7) {
+					if(figures[i - 7] == null || 
+							(figures[i - 7] != null &&!figures[i - 7].belongsTo(player)))
 						moves.add(new Move(i, i-7, figures));
-				}	
+				}
 			}
 		}
 		
 		// get the "best" possible move
-		Move[] moveArray = (Move[]) moves.toArray();
+		Move[] moveArray = new Move[moves.size()];
+		for(int i = 0; i < moves.size(); i++) {
+			moveArray[i] = (Move)moves.get(i);
+		}
 		
 		int actMin = 200;
 		
@@ -327,9 +349,7 @@ public class TournamentAi implements GameListener {
 	private Figure[] getUpdatedBoard(Figure[] board, Move move, Player player) {
 		Figure[] updatedBoard = new Figure[board.length];
 		//Create Temporary Board for movement
-		for(int i = 0; i < board.length; i++) {
-			updatedBoard[i] = new Figure(board[i].getKind(), player);
-		}
+		updatedBoard = board.clone();
 		updatedBoard[move.getTo()] = updatedBoard[move.getFrom()];
 		updatedBoard[move.getFrom()] = null;
 		return board;

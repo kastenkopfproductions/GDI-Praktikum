@@ -121,6 +121,8 @@ public class GameImpl implements Game {
 
 	@Override
 	public void setInitialChoice(Player p, FigureKind kind) throws RemoteException {
+		
+		//Wait for players
 		if (listener1.getPlayer().equals(p) && !done1) {
 			choice1 = kind;
 			done1 = true;
@@ -133,6 +135,7 @@ public class GameImpl implements Game {
 			if (choice1 != null && choice2 != null &&
 				(choice1.attack(choice2) == AttackResult.WIN || 
 				choice1.attack(choice2) == AttackResult.LOOSE)) {
+				//Process the result
 				if(choice1.attack(choice2) == AttackResult.WIN) {
 					sendMessage(listener1.getPlayer(), listener1.getPlayer().getNick() + " gewinnt.");
 					sendMessage(listener2.getPlayer(), listener1.getPlayer().getNick() + " gewinnt.");
@@ -142,6 +145,7 @@ public class GameImpl implements Game {
 					sendMessage(listener2.getPlayer(), listener2.getPlayer().getNick() + " gewinnt.");
 					nextPlayer = 2;
 				}
+				//Start the game
 				if (nextPlayer == 1) {
 					done1 = false;
 					done2 = false;
@@ -195,6 +199,7 @@ public class GameImpl implements Game {
 				lastPlayer = 2;
 		}
 		
+		//if movement is legal, start moving
 		if(legalMovement) {
 			//Standard movement
 			if(field[toIndex] == null) {
@@ -210,6 +215,7 @@ public class GameImpl implements Game {
 				
 				AttackResult r = field[fromIndex].attack(field[toIndex]);
 				tmpBoard[toIndex].setDiscovered();
+				//Reacting to the result of the battle
 				if(r == AttackResult.WIN) {
 					field[toIndex] = field[fromIndex].clone();
 					field[toIndex].setDiscovered();
@@ -266,8 +272,10 @@ public class GameImpl implements Game {
 				}
 			}
 			
+			//Update LastMove
 			this.lastMove = new Move(fromIndex, toIndex, tmpBoard.clone());
 			
+			//Update moving player
 			if(lastPlayer == 1) {
 				if(hasAnythingMoveable(listener2.getPlayer()))
 					listener2.provideNextMove();
