@@ -42,12 +42,12 @@ public class BasicAi implements GameListener {
 	public void provideInitialAssignment(Game game) throws RemoteException {
 		this.game = game;
 		FigureKind[] assignment = {
+				null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null,
 				ROCK, FLAG, ROCK, ROCK, ROCK, PAPER, PAPER,
-				PAPER, PAPER, SCISSORS, SCISSORS, SCISSORS, SCISSORS, TRAP,
-				null, null, null, null, null, null, null,
-				null, null, null, null, null, null, null,
-				null, null, null, null, null, null, null,
-				null, null, null, null, null, null, null,
+				PAPER, PAPER, SCISSORS, SCISSORS, SCISSORS, SCISSORS, TRAP
 		};
 		this.game.setInitialAssignment(this.player, assignment);
 	}

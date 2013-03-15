@@ -224,10 +224,10 @@ public class GamePane implements ActionListener{
 		try {
 			Figure[] result = ad.getResult();
 			FigureKind[] assignment = new FigureKind[42];
-			for(int i = 0; i < 14; i++) {
-				assignment[i] = result[i].getKind();
+			for(int i = 28; i < 42; i++) {
+				assignment[i] = result[i-28].getKind();
 			}
-			for(int i = 14; i < 42; i++) {
+			for(int i = 0; i < 28; i++) {
 				assignment[i] = null;
 			}
 			game.setInitialAssignment(player, assignment);
