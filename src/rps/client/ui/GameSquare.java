@@ -58,9 +58,9 @@ public class GameSquare extends JButton {
 	private static final String paperNormalDarkLM = data + "/papier_normal_dunkelblau_lm.png";
 	private static final String scissorsNormalLightLM = data + "/schere_normal_hellblau_lm.png";
 	private static final String scissorsNormalDarkLM = data + "/schere_normal_dunkelblau_lm.png";
-	private static final String questionMarkNormalLightLM = data + "fragezeichen_normal_hellblau_lm.png";
-	private static final String questionMarkNormalDarkLM = data + "fragezeichen_normal_dunkelblau_lm.png";
-	private static final String rockNormalLightNVLM = data + "stein_normal_hellblau_nv_lm.png";
+	private static final String questionMarkNormalLightLM = data + "/fragezeichen_normal_hellblau_lm.png";
+	private static final String questionMarkNormalDarkLM = data + "/fragezeichen_normal_dunkelblau_lm.png";
+	private static final String rockNormalLightNVLM = data + "/stein_normal_hellblau_nv_lm.png";
 	private static final String rockNormalDarkNVLM= data + "/stein_normal_dunkelblau_nv_lm.png";
 	private static final String paperNormalLightNVLM = data + "/papier_normal_hellblau_nv_lm.png";
 	private static final String paperNormalDarkNVLM = data + "/papier_normal_dunkelblau_nv_lm.png";
