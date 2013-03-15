@@ -3,6 +3,8 @@ package rps.game;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import rps.client.GameListener;
 import rps.game.data.AttackResult;
 import rps.game.data.Figure;
@@ -182,26 +184,15 @@ public class GameImpl implements Game {
 		//Is movement legal?
 		Figure[] tmpBoard = field.clone();
 		boolean legalMovement = true;
-		if((lastPlayer == 1 && movingPlayer.equals(listener1.getPlayer())) ||
-				(lastPlayer == 2 && movingPlayer.equals(listener2.getPlayer()))) {
-			if(lastPlayer == 1 && hasAnythingMoveable(listener2.getPlayer())) {
-			} else if(lastPlayer == 2 && hasAnythingMoveable(listener1.getPlayer())) {
-			} else {
-				legalMovement = false;
-				throw new IllegalStateException();
-			}
-		} else {
-			if(lastPlayer == 2 && movingPlayer.equals(listener1.getPlayer()))
+		if(lastPlayer == 2 && movingPlayer.equals(listener1.getPlayer()))
+			lastPlayer = 1;
+		else if(lastPlayer == 1 && movingPlayer.equals(listener2.getPlayer()))
+			lastPlayer = 2;
+		else {
+			if(movingPlayer.equals(listener1.getPlayer()))
 				lastPlayer = 1;
-			else if(lastPlayer == 1 && movingPlayer.equals(listener2.getPlayer()))
+			else
 				lastPlayer = 2;
-			else {
-				if(movingPlayer.equals(listener1.getPlayer()))
-					lastPlayer = 1;
-				else
-					lastPlayer = 2;
-			}
-			
 		}
 		
 		if(legalMovement) {
@@ -240,7 +231,9 @@ public class GameImpl implements Game {
 						listener1.gameIsLost();
 					}
 				} else if(r == AttackResult.DRAW) {
-					boolean success = false;
+					JOptionPane.showMessageDialog(null, "Auf Grund von sehr verwirrenden Fehlern " +
+							"konnten wir leider keine Entscheidungsschlacht implementieren.", "Fehler!", JOptionPane.ERROR_MESSAGE);
+					/*boolean success = false;
 					
 					FigureKind tmpLastType = null;
 					
@@ -269,7 +262,7 @@ public class GameImpl implements Game {
 							field[toIndex] = new Figure(newType, movingPlayer);
 							field[fromIndex] = new Figure(newType, getOpponent(movingPlayer));
 						}
-					}
+					}*/
 				}
 			}
 			
