@@ -138,17 +138,15 @@ public class GameController implements GameListener {
 	@Override
 	public void figureMoved() throws RemoteException {
 		gamePane.setMove();
+		gamePane.showLastMove(game.getLastMove().getTo());
 	}
 
 	@Override
 	public void figureAttacked() throws RemoteException {
 		gamePane.setAttack();
-
-	}
-
-	public void setLastMoves() throws RemoteException {
 		gamePane.showLastMove(game.getLastMove().getTo());
 	}
+
 	
 	@Override
 	public void provideChoiceAfterFightIsDrawn() throws RemoteException {
