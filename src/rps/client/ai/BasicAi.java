@@ -42,10 +42,6 @@ public class BasicAi implements GameListener {
 	public void provideInitialAssignment(Game game) throws RemoteException {
 		this.game = game;
 		FigureKind[] assignment = {
-				null, null, null, null, null, null, null,
-				null, null, null, null, null, null, null,
-				null, null, null, null, null, null, null,
-				null, null, null, null, null, null, null,
 				ROCK, FLAG, ROCK, ROCK, ROCK, PAPER, PAPER,
 				PAPER, PAPER, SCISSORS, SCISSORS, SCISSORS, SCISSORS, TRAP
 		};
@@ -78,28 +74,27 @@ public class BasicAi implements GameListener {
 		Figure[] figures = this.game.getField();
 		ArrayList<Move> moves = new ArrayList<Move>();
 		
-		for (int i = 0; i < 7; i++) {
-			// check if it is your figure
-			if (figures[i].belongsTo(this.player)) {
+		for (int i = 0; i < 42; i++) {
+			if (figures[i] != null && !(figures[i].belongsTo(this.player))) {
 				if (i%7 != 0) {
-					System.out.println("Can move Figure @" + i + "left");
-					moves.add(new Move(i, i-1, figures));
+					if(figures[i - 1] == null || !figures[i - 1].belongsTo(player))
+						moves.add(new Move(i, i-1, figures));
 				}
 				
 				if ((i+1)%7 != 0) {
-					System.out.println("Can move Figure @" + i + "right");
-					moves.add(new Move(i, i+1, figures));
+					if(figures[i + 1] == null || !figures[i + 1].belongsTo(player))
+						moves.add(new Move(i, i+1, figures));
 				}
 				
-				if (i <= 41) {
-					System.out.println("Can move Figure @" + i + "up");
-					moves.add(new Move(i, i+7, figures));
+				if (i <= 35) {
+					if(figures[i + 7] == null || !figures[i + 7].belongsTo(player))
+						moves.add(new Move(i, i+7, figures));
 				}
 				
 				if (i%7 >= 7) {
-					System.out.println("Can move Figure @" + i + "down");
-					moves.add(new Move(i, i-7, figures));
-				}				
+					if(figures[i - 7] == null || !figures[i - 7].belongsTo(player))
+						moves.add(new Move(i, i-7, figures));
+				}
 			}
 		}
 		
