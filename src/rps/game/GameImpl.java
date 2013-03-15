@@ -174,6 +174,11 @@ public class GameImpl implements Game {
 
 	
 	public void move(Player movingPlayer, int fromIndex, int toIndex) throws RemoteException, IllegalStateException {
+		//Is game drawn?
+		if((!hasAnythingMoveable(listener1.getPlayer())) && (!hasAnythingMoveable(listener2.getPlayer()))) {
+			listener1.gameIsDrawn();
+			listener2.gameIsDrawn();
+		}
 		//Is movement legal?
 		Figure[] tmpBoard = field.clone();
 		boolean legalMovement = true;
@@ -245,11 +250,14 @@ public class GameImpl implements Game {
 						listener1.provideChoiceAfterFightIsDrawn();
 						listener2.provideChoiceAfterFightIsDrawn();
 						
+						while(!(done1 && done2));
+						
 						r = choice1.attack(choice2);
 						listener1.figureAttacked();
 						listener2.figureAttacked();	
 						if(r == AttackResult.WIN) {
 							field[toIndex] = new Figure(choice1, listener1.getPlayer());
+							field[fromIndex] = null;
 							success = true;
 						}
 						else if(r == AttackResult.LOOSE) {
@@ -284,12 +292,10 @@ public class GameImpl implements Game {
 	@Override
 	public void setUpdatedKindAfterDraw(Player p, FigureKind kind) throws RemoteException {
 
-		if(p.equals(listener1.getPlayer())) {
+		if(p.equals(listener1.getPlayer()) && !done1) {
 			done1 = true;
 			choice1 = kind;
-		}
-		
-		if(p.equals(listener2.getPlayer())) {
+		} else if(p.equals(listener2.getPlayer()) && !done2) {
 			done2 = true;
 			choice2 = kind;
 		}
